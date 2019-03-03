@@ -21,10 +21,7 @@ public class Consulta {
     }
     
     public static void desconectar(){
-        session.save(sf);
-        session.update(sf);
-        session.delete(sf);
-        session.clear();
+        
         session.close();
         sf.close();
     }
@@ -57,8 +54,6 @@ public class Consulta {
         Query queryEx = session.createQuery(query);
         int count = queryEx.executeUpdate();
         System.out.println("Borrados los "+count+" que eran mayores a "+listaNominas.get(0).getIrpf());
-        
-        
        transaction.commit();
     }
     

@@ -21,18 +21,17 @@ public class MainNominas {
          System.out.println("Ingrese un DNI");
          String DNI = scanner.nextLine();
          if(consulta.existe(DNI)){
-             System.out.println(DNI);
              System.out.println(consulta.mostrar(DNI));
              consulta.aumentarSalarioBase(DNI);
              consulta.destruir(DNI);
+             
          
          }else{
              System.out.println("No hemos encontrado el trabajador en nuestro sistema.");
          }
+         
          consulta.desconectar();
          
     }
-    
-
     
 }
