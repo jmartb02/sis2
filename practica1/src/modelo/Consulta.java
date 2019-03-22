@@ -1,4 +1,4 @@
-package Modelo;
+package modelo;
 
 import Controlador.NewHibernateUtil;
 import java.util.List;

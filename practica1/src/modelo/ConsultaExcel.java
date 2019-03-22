@@ -5,12 +5,14 @@
  */
 package modelo;
 
-import modelo.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import modelo.Categorias;
+import modelo.Empresas;
+import modelo.Trabajadorbbdd;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -26,11 +28,10 @@ public class ConsultaExcel {
      //   this.listaTrabajadores ;
     }
     
-    public static ArrayList<String> leer()throws FileNotFoundException, IOException{
-        ArrayList<String> listaTrabajadores = new ArrayList<String>();
+    public static ArrayList<Trabajadorbbdd> leer()throws FileNotFoundException, IOException{
+        ArrayList<Trabajadorbbdd> listaTrabajadoresbbdd = new ArrayList<Trabajadorbbdd>();
        FileInputStream file;
         file = new FileInputStream(new File(excel));
-        int aux= 2;
         
         try ( // Crear el objeto que tendra el libro de Excel
                 XSSFWorkbook workbook = new XSSFWorkbook(file)) {
@@ -44,16 +45,53 @@ public class ConsultaExcel {
             //metodo getCell
             rowIterator.next();
             while (rowIterator.hasNext()) {
+                Trabajadorbbdd trabajador = new Trabajadorbbdd();
                 row = rowIterator.next();
- 
-                if(row.getCell(3) != null){
-                    listaTrabajadores.add(row.getCell(3).getStringCellValue());
+          
+                if(row.getCell(0) != null){
+                    trabajador.setNombre(row.getCell(0).getStringCellValue());
                 }else{
-                    listaTrabajadores.add("");
-
+                    trabajador.setNifnie("");                    
                 }
                 
-
+                if(row.getCell(1) != null){
+                    trabajador.setApellido1(row.getCell(1).getStringCellValue());
+                }else{
+                    trabajador.setApellido1("");                    
+                }
+                
+                if(row.getCell(2) != null){
+                    trabajador.setApellido2(row.getCell(2).getStringCellValue());
+                }else{
+                    trabajador.setApellido2("");                    
+                }
+                
+                if(row.getCell(3) != null){
+                    trabajador.setNifnie(row.getCell(3).getStringCellValue());
+                }else{
+                    trabajador.setNifnie("");                    
+                }
+                if(row.getCell(6) != null){
+                    Empresas empresa = new Empresas();
+                    empresa.setNombre(row.getCell(6).getStringCellValue());
+                    trabajador.setEmpresas(empresa);
+                }else{
+                    Empresas empresa = new Empresas();
+                    empresa.setNombre("");
+                    trabajador.setEmpresas(empresa);                  
+                }
+                
+                if(row.getCell(7) != null){
+                    Categorias categoria= new Categorias();
+                    categoria.setNombreCategoria(row.getCell(7).getStringCellValue());
+                    trabajador.setCategorias(categoria);
+                }else{
+                    Categorias categoria= new Categorias();
+                    categoria.setNombreCategoria("");
+                    trabajador.setCategorias(categoria);                
+                }
+                
+                listaTrabajadoresbbdd.add(trabajador);
                 
                /* while (cellIterator.hasNext()){
                     celda = cellIterator.next();
@@ -90,6 +128,6 @@ public class ConsultaExcel {
             // cerramos el libro excel
         }
         
-        return listaTrabajadores;
+        return listaTrabajadoresbbdd;
     }
 }
