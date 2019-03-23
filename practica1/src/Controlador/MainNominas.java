@@ -101,7 +101,7 @@ public class MainNominas {
             listaTrabajadores = consulta.leer();
           try {
               Integer aux= 1;
-            StreamResult result = new StreamResult(new File("src/resources/error.xml"));
+            StreamResult result = new StreamResult(new File("src/resources/Errores.xml"));
            //parametros de creacion del documento con elemento root trabajadores
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -112,12 +112,7 @@ public class MainNominas {
             
              ArrayList<String> newList = new ArrayList<String>();
             
-            for(Trabajadorbbdd trabajador: listaTrabajadores){
-                
-               
-                
-                
-                
+            for(Trabajadorbbdd trabajador: listaTrabajadores){     
                 
                 aux++;
                     //etiquetas documento XML
@@ -159,8 +154,8 @@ public class MainNominas {
 		
 		empresa.appendChild(doc.createTextNode(trabajador.getEmpresas().getNombre()));
 		staff.appendChild(empresa);
-                }
-          
+                }//fin de if
+                // si no esta en la lista añadimos el dni
                 if (!newList.contains(trabajador.getNifnie())) { 
 
                       newList.add(trabajador.getNifnie()); 
