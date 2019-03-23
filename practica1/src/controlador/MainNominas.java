@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlador;
+package controlador;
 
 import modelo.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import vista.*;
 import java.util.Scanner;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class MainNominas {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParserConfigurationException {
         ejercicio2();
     
     }
@@ -42,7 +43,7 @@ public class MainNominas {
          consulta.desconectar();
     }
     
-    public static void ejercicio2() throws IOException{
+    public static void ejercicio2() throws IOException, ParserConfigurationException{
         ArrayList<Trabajadorbbdd> listaTrabajadores;
         ConsultaExcel consulta = new ConsultaExcel("src\\resources\\SistemasInformacionII.xlsx");
         listaTrabajadores = consulta.leer();
@@ -74,7 +75,11 @@ public class MainNominas {
         
        if(!comprobar(listaTrabajadores, dnis)){
            //sustituir los DNI de la lista de trabajadores que hay almacenado en listaTrabajadores.
+           consulta.escribir(listaTrabajadores);
        }
+       
+       CrearXML XML = new CrearXML();
+       XML.errorXML(listaTrabajadores);
     }
     
     public static boolean comprobar(ArrayList<Trabajadorbbdd> listaTrabajadores, int[] dnis) {
@@ -85,7 +90,6 @@ public class MainNominas {
         for(Trabajadorbbdd trabajador: listaTrabajadores){
             if(dnis[posicion] < 24){
                 if(!String.valueOf(letras[dnis[posicion]]).equals(trabajador.getNifnie().substring(trabajador.getNifnie().length()-1))){
-                
                     correcto = false;
                     trabajador.setNifnie(trabajador.getNifnie().subSequence(0, trabajador.getNifnie().length()-1).toString() + letras[dnis[posicion]]);
                 }

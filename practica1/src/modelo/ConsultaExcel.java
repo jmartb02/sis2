@@ -8,6 +8,7 @@ package modelo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import modelo.Categorias;
@@ -92,42 +93,47 @@ public class ConsultaExcel {
                 }
                 
                 listaTrabajadoresbbdd.add(trabajador);
-                
-               /* while (cellIterator.hasNext()){
-                    celda = cellIterator.next();
-                   if(celda.getRowIndex() >= 1 && celda.getColumnIndex() == 3){
-                       
-                        // Dependiendo del formato de la celda el valor se debe mostrar como String, Fecha, boolean, entero...
-                       /* switch(celda.getCellType()) {
-                            case Cell.CELL_TYPE_NUMERIC:
-                                if( DateUtil.isCellDateFormatted(celda) ){
-                                    System.out.println(celda.getDateCellValue());
-                                }else{
-                                    System.out.println(celda.getNumericCellValue());
-                                }
-                                break;
-                            case Cell.CELL_TYPE_STRING:
-                                System.out.println(celda.getStringCellValue());
-                                break;
-                            case Cell.CELL_TYPE_BOOLEAN:
-                                System.out.println(celda.getBooleanCellValue());
-                                break;
-                        }*/
 
-                      /* System.out.print(celda.getStringCellValue());
-                       System.out.println(" "+aux);
-                       aux++;
-                       listaTrabajadores.add(celda.getStringCellValue());
-                      //se mete cada valor de los dni en un arraylist original de dnis
-                      // dni.anadirDniArray(celda.getStringCellValue());
-                       //se mete la posicion el el arraylsit
-                      // dni.anadirPosArray(celda.getRowIndex()+"-"+celda.getColumnIndex());
-                   }
-                }*/
+
             }
             // cerramos el libro excel
         }
         
         return listaTrabajadoresbbdd;
     }
+    
+        public static void escribir(ArrayList<Trabajadorbbdd> trabajadores)throws FileNotFoundException, IOException{
+        FileInputStream file;
+        file = new FileInputStream(new File(excel));
+        try ( // Crear el objeto que tendra el libro de Excel
+            XSSFWorkbook workbook = new XSSFWorkbook(file)) {
+             /*
+             * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
+             */
+             XSSFSheet sheet = workbook.getSheetAt(0);
+             Iterator<Row> rowIterator = sheet.iterator();
+             int row = 1;
+             Cell cell;
+             // Recorremos todas las filas para mostrar el contenido de cada celda
+             //metodo getCell
+             rowIterator.next();
+             
+             
+             for(Trabajadorbbdd trabajador: trabajadores){
+                 
+                 if(trabajador.getNifnie() != ""){
+                     cell = sheet.getRow(row).getCell(3); //obtiene la fila y columna
+                    cell.setCellValue(trabajador.getNifnie());//cambia la celda
+                 }
+                 
+                 row++;
+             }
+             
+             file.close();
+              try (FileOutputStream outFile = new FileOutputStream(new File(excel))) {
+                        workbook.write(outFile);
+                    }
+
+         }
+        }
 }
