@@ -108,4 +108,82 @@ public class CrearXML {
 	  }
     
     }
+    
+    public static void erroresCCC(ArrayList<Trabajadorbbdd> listaTrabajadores, int[] id) throws IOException, ParserConfigurationException{
+          try {
+              int aux= 0;
+            StreamResult result = new StreamResult(new File("src/resources/erroresCCC.xml"));
+           //parametros de creacion del documento con elemento root trabajadores
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            DOMSource source = new DOMSource(doc);
+            Element rootElement =  doc.createElement("Cuentas");
+            doc.appendChild(rootElement);
+
+            
+            for(Trabajadorbbdd trabajador: listaTrabajadores){     
+                
+                
+                    //etiquetas documento XML
+            Element nombre = doc.createElement("Nombre");
+            Element primerApellido = doc.createElement("PrimerApellido");
+            Element segundoApellido = doc.createElement("PrimerApellido");
+            Element categoria = doc.createElement("categoria");
+            Element empresa = doc.createElement("empresa");
+            Element codigoCuenta = doc.createElement("CodigoCuenta");
+            Element IBAN = doc.createElement("IBAN");
+              
+                Element staff = doc.createElement("Cuenta");
+                rootElement.appendChild(staff);
+                
+		staff.setAttribute("id", (id[aux]+2)+"");
+
+		// elemento nombre
+		
+		nombre.appendChild(doc.createTextNode(trabajador.getNombre()));
+		staff.appendChild(nombre);
+
+		//elemento Primer Apellido
+		
+		primerApellido.appendChild(doc.createTextNode(trabajador.getApellido1()));
+		staff.appendChild(primerApellido);
+                
+                // elemento Segundo apellido
+		
+		segundoApellido.appendChild(doc.createTextNode(trabajador.getApellido2()));
+		staff.appendChild(segundoApellido);
+
+		// elemento categoria
+		
+		categoria.appendChild(doc.createTextNode(trabajador.getCategorias().getNombreCategoria()));
+		staff.appendChild(categoria);
+
+		// elemento empresa
+		empresa.appendChild(doc.createTextNode(trabajador.getEmpresas().getNombre()));
+		staff.appendChild(empresa);
+                
+                // elemento Codigo de cuenta
+		codigoCuenta.appendChild(doc.createTextNode(trabajador.getCodigoCuenta()));
+		staff.appendChild(codigoCuenta);
+                
+                // elemento IBAN
+		IBAN.appendChild(doc.createTextNode(trabajador.getIban()));
+		staff.appendChild(IBAN);
+
+		// escribimos el contenido en el XML
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();  
+		transformer.transform(source, result);
+                
+                aux++;
+            }//fin de for
+              
+            
+	  } catch (ParserConfigurationException pce) {
+		pce.printStackTrace();
+	  } catch (TransformerException tfe) {
+		tfe.printStackTrace();
+	  }
+    }
 }

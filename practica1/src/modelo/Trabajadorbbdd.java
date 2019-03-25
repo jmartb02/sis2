@@ -23,6 +23,7 @@ public class Trabajadorbbdd  implements java.io.Serializable {
      private Date fechaAlta;
      private String codigoCuenta;
      private String iban;
+     private String paisOrigen;
      
      private Set nominas = new HashSet(0);
 
@@ -141,8 +142,13 @@ public class Trabajadorbbdd  implements java.io.Serializable {
         this.nominas = nominas;
     }
 
+    public void setPaisOrigen(String paisOrigen){
+        this.paisOrigen = paisOrigen;
+    }
 
-
+    public String getPaisOrigen(){
+        return this.paisOrigen;
+    }
 
 }
 

@@ -92,6 +92,18 @@ public class ConsultaExcel {
                     trabajador.setCategorias(categoria);                
                 }
                 
+                if(row.getCell(10) != null){
+                    trabajador.setCodigoCuenta(row.getCell(10).getStringCellValue());
+                }else{
+                    trabajador.setCodigoCuenta("");
+                }
+                
+                if(row.getCell(11) != null){
+                    trabajador.setPaisOrigen(row.getCell(11).getStringCellValue());
+                }else{
+                    trabajador.setPaisOrigen("");
+                }
+                
                 listaTrabajadoresbbdd.add(trabajador);
 
 
@@ -104,6 +116,7 @@ public class ConsultaExcel {
     
         public static void escribir(ArrayList<Trabajadorbbdd> trabajadores)throws FileNotFoundException, IOException{
         FileInputStream file;
+        int aux = 2;
         file = new FileInputStream(new File(excel));
         try ( // Crear el objeto que tendra el libro de Excel
             XSSFWorkbook workbook = new XSSFWorkbook(file)) {
@@ -122,11 +135,17 @@ public class ConsultaExcel {
              for(Trabajadorbbdd trabajador: trabajadores){
                  
                  if(trabajador.getNifnie() != ""){
-                     cell = sheet.getRow(row).getCell(3); //obtiene la fila y columna
+                     cell = sheet.getRow(row).getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK); //obtiene la fila y columna
                     cell.setCellValue(trabajador.getNifnie());//cambia la celda
                  }
                  
+                 if(trabajador.getIban() != ""){
+                     cell = sheet.getRow(row).getCell(12, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK); //obtiene la fila y columna
+                    cell.setCellValue(trabajador.getIban());//cambia la celda
+                 }
+                 
                  row++;
+                 aux++;
              }
              
              file.close();
