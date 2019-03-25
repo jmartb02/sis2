@@ -116,7 +116,6 @@ public class ConsultaExcel {
     
         public static void escribir(ArrayList<Trabajadorbbdd> trabajadores)throws FileNotFoundException, IOException{
         FileInputStream file;
-        int aux = 2;
         file = new FileInputStream(new File(excel));
         try ( // Crear el objeto que tendra el libro de Excel
             XSSFWorkbook workbook = new XSSFWorkbook(file)) {
@@ -144,8 +143,12 @@ public class ConsultaExcel {
                     cell.setCellValue(trabajador.getIban());//cambia la celda
                  }
                  
+                 if(trabajador.getCodigoCuenta() != ""){
+                     cell = sheet.getRow(row).getCell(10, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK); //obtiene la fila y columna
+                    cell.setCellValue(trabajador.getCodigoCuenta());//cambia la celda
+                 }
+                 
                  row++;
-                 aux++;
              }
              
              file.close();

@@ -153,6 +153,9 @@ public class MainNominas {
         if(Integer.parseInt(compararPrimero) == Integer.parseInt(comprobarPrimero) && Integer.parseInt(compararSegundo) == Integer.parseInt(comprobarSegundo)){
             return true;
         }else{
+            String codigoCuenta = entidadBancaria+entidadOficina+comprobarPrimero+comprobarSegundo+cuenta;
+            System.out.println(codigoCuenta);
+            trabajador.setCodigoCuenta(codigoCuenta);
             return false;
         }
     }
