@@ -20,7 +20,13 @@ public class MainNominas {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, ParserConfigurationException {
-        ejercicio3();
+        ArrayList<Trabajadorbbdd> listaTrabajadores ;
+        ConsultaExcel consulta = new ConsultaExcel("src/resources/SistemasInformacionII.xlsx");
+        listaTrabajadores= consulta.leer();
+       // ejercicio1();
+        ejercicio2(listaTrabajadores);
+        ejercicio3(listaTrabajadores);
+        consulta.escribir(listaTrabajadores);
 
     }
     
@@ -45,10 +51,7 @@ public class MainNominas {
          consulta.desconectar();
     }
     
-    public static void ejercicio2() throws IOException, ParserConfigurationException{
-        ArrayList<Trabajadorbbdd> listaTrabajadores;
-        ConsultaExcel consulta = new ConsultaExcel("src\\resources\\SistemasInformacionII.xlsx");
-        listaTrabajadores = consulta.leer();
+    public static void ejercicio2(ArrayList<Trabajadorbbdd> listaTrabajadores) throws IOException, ParserConfigurationException{
         int aux = 0;
         int[] dnis = new int[listaTrabajadores.size()];
         for(Trabajadorbbdd trabajador: listaTrabajadores){
@@ -77,13 +80,13 @@ public class MainNominas {
         
        if(!comprobar(listaTrabajadores, dnis)){
            //sustituir los DNI de la lista de trabajadores que hay almacenado en listaTrabajadores.
-           consulta.escribir(listaTrabajadores);
+           
        }
        
        CrearXML XML = new CrearXML();
        XML.errorXML(listaTrabajadores);
     }
-    
+
     public static boolean comprobar(ArrayList<Trabajadorbbdd> listaTrabajadores, int[] dnis) {
         boolean correcto = true;
         String abecedario = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -101,13 +104,59 @@ public class MainNominas {
         }
        return correcto;
     }
+    public static void ejercicio3(ArrayList<Trabajadorbbdd> listaTrabajadores) throws IOException, ParserConfigurationException{      
+        calculoIBAN(listaTrabajadores);
+        calculoEmail(listaTrabajadores);
+    }
     
-    public static void ejercicio3() throws IOException, ParserConfigurationException{
-        ArrayList<Trabajadorbbdd> listaTrabajadores;
+    public static void calculoEmail(ArrayList<Trabajadorbbdd> listaTrabajadores) throws IOException{
+  
+    ArrayList<String> repetido = new ArrayList<>();
+    
+    String letraPA,letraSA,nombre,empresa, email;
+    int aux= 0;
+
+        for(Trabajadorbbdd trabajador: listaTrabajadores){
+            if(trabajador.getEmail()==null){
+                letraPA = trabajador.getApellido1().substring(0, 1).toLowerCase();
+                nombre = trabajador.getNombre().substring(0,1).toLowerCase();
+                empresa=trabajador.getEmpresas().getNombre().toLowerCase();
+            
+                if(trabajador.getApellido2()==""){
+                    String aux2 = String.format("%02d", aux);
+                    email = letraPA+ nombre+aux2+empresa+".es";
+                        if(repetido.contains(email)){
+                            aux ++;
+                            String aux3 = String.format("%02d", aux);
+                            email = letraPA+ nombre+aux3+empresa+".es";
+                            aux=0;
+                       }
+                        repetido.add(email);
+                        trabajador.setEmail(email);
+                }
+            if(trabajador.getApellido2()!=""){
+                letraSA = trabajador.getApellido2().substring(0,1).toLowerCase();
+                String aux2 = String.format("%02d", aux);
+                email = letraPA+ letraSA+ nombre+aux2+empresa+".es";
+                    if(repetido.contains(email)){
+                        aux ++;
+                        String aux3 = String.format("%02d", aux);
+                        email = letraPA+ letraSA+ nombre+aux3+empresa+".es";
+                        aux=0;
+                    }
+ 
+            repetido.add(email);
+            trabajador.setEmail(email);
+            
+            }
+            
+        }
+        }
+    }
+    public static void calculoIBAN(ArrayList<Trabajadorbbdd> listaTrabajadores) throws IOException, ParserConfigurationException{
+        
         ArrayList<Trabajadorbbdd> listaTrabajadoresError = new ArrayList<Trabajadorbbdd>();
         List<Integer> id = new ArrayList<Integer>();
-        ConsultaExcel consulta = new ConsultaExcel("src\\resources\\SistemasInformacionII.xlsx");
-        listaTrabajadores = consulta.leer();
         
         int aux = 0;
         for(Trabajadorbbdd trab: listaTrabajadores){
@@ -127,7 +176,6 @@ public class MainNominas {
         for(int i = 0; i < id.size(); i++){
             IDs[i] = id.get(i);
         }
-        consulta.escribir(listaTrabajadores);
         
         if(!listaTrabajadoresError.isEmpty()){
             CrearXML XML = new CrearXML();
@@ -137,7 +185,6 @@ public class MainNominas {
     }
     
     public static boolean digitoControl(Trabajadorbbdd trabajador){
-        String pais = trabajador.getPaisOrigen();
         String entidadBancaria = trabajador.getCodigoCuenta().substring(0, 4);
         String entidadOficina = trabajador.getCodigoCuenta().substring(4, 8);
         String digitosControl = trabajador.getCodigoCuenta().substring(8, 10);
@@ -154,7 +201,6 @@ public class MainNominas {
             return true;
         }else{
             String codigoCuenta = entidadBancaria+entidadOficina+comprobarPrimero+comprobarSegundo+cuenta;
-            System.out.println(codigoCuenta);
             trabajador.setCodigoCuenta(codigoCuenta);
             return false;
         }

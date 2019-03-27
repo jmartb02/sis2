@@ -138,6 +138,11 @@ public class ConsultaExcel {
                     cell.setCellValue(trabajador.getNifnie());//cambia la celda
                  }
                  
+                 if(trabajador.getEmail() != ""){
+                     cell = sheet.getRow(row).getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK); //obtiene la fila y columna
+                    cell.setCellValue(trabajador.getEmail());//cambia la celda
+                 }
+                 
                  if(trabajador.getIban() != ""){
                      cell = sheet.getRow(row).getCell(12, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK); //obtiene la fila y columna
                     cell.setCellValue(trabajador.getIban());//cambia la celda
