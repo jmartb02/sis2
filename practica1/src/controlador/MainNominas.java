@@ -23,7 +23,7 @@ public class MainNominas {
         ArrayList<Trabajadorbbdd> listaTrabajadores ;
         ConsultaExcel consulta = new ConsultaExcel("src/resources/SistemasInformacionII.xlsx");
         listaTrabajadores= consulta.leer();
-       // ejercicio1();
+        //ejercicio1();
         ejercicio2(listaTrabajadores);
         ejercicio3(listaTrabajadores);
         consulta.escribir(listaTrabajadores);
@@ -124,7 +124,7 @@ public class MainNominas {
             
                 if(trabajador.getApellido2()==""){
                     String aux2 = String.format("%02d", aux);
-                    email = letraPA+ nombre+aux2+empresa+".es";
+                    email = letraPA+ nombre+aux2+"@"+empresa+".es";
                         if(repetido.contains(email)){
                             aux ++;
                             String aux3 = String.format("%02d", aux);
