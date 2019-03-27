@@ -128,7 +128,7 @@ public class MainNominas {
                         if(repetido.contains(email)){
                             aux ++;
                             String aux3 = String.format("%02d", aux);
-                            email = letraPA+ nombre+aux3+empresa+".es";
+                            email = letraPA+ nombre+aux3+"@"+empresa+".es";
                             aux=0;
                        }
                         repetido.add(email);
@@ -137,11 +137,11 @@ public class MainNominas {
             if(trabajador.getApellido2()!=""){
                 letraSA = trabajador.getApellido2().substring(0,1).toLowerCase();
                 String aux2 = String.format("%02d", aux);
-                email = letraPA+ letraSA+ nombre+aux2+empresa+".es";
+                email = letraPA+ letraSA+ nombre+aux2+"@"+empresa+".es";
                     if(repetido.contains(email)){
                         aux ++;
                         String aux3 = String.format("%02d", aux);
-                        email = letraPA+ letraSA+ nombre+aux3+empresa+".es";
+                        email = letraPA+ letraSA+ nombre+aux3+"@"+empresa+".es";
                         aux=0;
                     }
  
