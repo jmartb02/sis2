@@ -40,6 +40,7 @@ public class ConsultaExcel {
             * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
             */
             XSSFSheet sheet = workbook.getSheetAt(0);
+            
             Iterator<Row> rowIterator = sheet.iterator();
             Row row;
             // Recorremos todas las filas para mostrar el contenido de cada celda
@@ -114,11 +115,71 @@ public class ConsultaExcel {
         return listaTrabajadoresbbdd;
     }
     
+   public Parametro leer1() throws FileNotFoundException, IOException{
+       Parametro listanominas = new Parametro();
+       ArrayList<String> categorias  = new ArrayList<String>();
+       ArrayList<Double> salarios = new ArrayList<Double>();
+       ArrayList<Double> complementos = new ArrayList<Double>();
+       ArrayList<Double> brutos = new ArrayList<Double>();
+       ArrayList<Double> retenciones = new ArrayList<Double>();
+       ArrayList<Double> trienios = new ArrayList<Double>();
+       ArrayList<Double> cuotas = new ArrayList<Double>();
+       FileInputStream file;
+       file = new FileInputStream(new File(excel));
+        try( XSSFWorkbook workbook = new XSSFWorkbook(file)){
+
+             XSSFSheet sheet1 = workbook.getSheetAt(1);
+             Iterator<Row> rowIterator = sheet1.iterator();
+             Row row;
+             rowIterator.next();
+
+    for(int i=0;i<49;i++){
+       row = rowIterator.next();
+       double bruto= row.getCell(5).getNumericCellValue();
+       brutos.add(bruto);
+       double retencion= row.getCell(6).getNumericCellValue();
+       retenciones.add(retencion);
+       
+       if(i>16&&i<35){//obtener trienios
+        double trienio= row.getCell(3).getNumericCellValue();
+        trienios.add(trienio);
+       }
+       if(i<14){//lectura de columnas de 14
+        String categoria=row.getCell(0).getStringCellValue();
+        categorias.add(categoria);
+        double salario= row.getCell(1).getNumericCellValue();
+        salarios.add(salario);
+        double complemento = row.getCell(2).getNumericCellValue();
+        complementos.add(complemento);
+       }
+       if(i>15&&i<24){//obtener cuotas extra
+        double cuota = row.getCell(1).getNumericCellValue();
+        cuotas.add(cuota);
+       }
+       
+   }
+   listanominas.setSalariobase(salarios);
+   listanominas.setCategorias(categorias);
+   listanominas.setComplementos(complementos);
+   listanominas.setTrienio(trienios);
+   listanominas.setBruto(brutos);
+   listanominas.setRetenciones(retenciones);
+   listanominas.setCuota(cuotas);
+   
+   System.out.print(listanominas.getCategorias());
+
+  return  listanominas;
+     }
+   }
+ 
+      
         public static void escribir(ArrayList<Trabajadorbbdd> trabajadores)throws FileNotFoundException, IOException{
         FileInputStream file;
         file = new FileInputStream(new File(excel));
         try ( // Crear el objeto que tendra el libro de Excel
             XSSFWorkbook workbook = new XSSFWorkbook(file)) {
+            
+        
              /*
              * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
              */
@@ -137,7 +198,6 @@ public class ConsultaExcel {
                      cell = sheet.getRow(row).getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK); //obtiene la fila y columna
                     cell.setCellValue(trabajador.getNifnie());//cambia la celda
                  }
-                 
                  if(trabajador.getEmail() != ""){
                      cell = sheet.getRow(row).getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK); //obtiene la fila y columna
                     cell.setCellValue(trabajador.getEmail());//cambia la celda
