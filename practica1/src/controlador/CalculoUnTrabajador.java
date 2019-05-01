@@ -31,14 +31,13 @@ public class CalculoUnTrabajador {
     public CalculoUnTrabajador(Trabajadorbbdd trabajador,Parametro parametro, Date fecha){
         this.trabajador = trabajador;
         this.parametro = parametro;
-        this.calculo = new CalculoTrabajador(parametro, trabajador, fecha);
+        this.calculo = new CalculoTrabajador(this.parametro, trabajador, fecha);
         this.fecha = fecha;
         this.nomina = new Nomina();
     }
     
     public void asignar(){
-        this.salarioBase = this.calculo.calculoBase();
-        System.out.println(this.calculo.calculoProrateo());
+        this.salarioBase = ((double)Math.round(this.calculo.calculoBase() * 100d)/100d);
         this.nomina.setValorProrrateo(this.calculo.calculoProrateo());
         this.nomina.setImporteComplementoMes(this.calculo.calculoComplemento());
         this.nomina.setSeguridadSocialTrabajador(this.calculo.calculoContingecias());
@@ -53,7 +52,8 @@ public class CalculoUnTrabajador {
         this.costeTotalParaEmpresario = this.calculo.calculoContigenciasComunes()+this.calculo.calculoDesempleoEmpresario()+
                 this.calculo.calculoFormacionEmpresario()+this.calculo.calculoAccidentesEmpresario()+
                 this.calculo.calculoFogasa();
-        this.costeTotalTrabajador = this.costeTotalParaEmpresario+this.calculo.getCalculoEmpresarioBase();
+        this.costeTotalTrabajador = ((double)Math.round((this.costeTotalParaEmpresario+this.devengos) * 100d)/100d);
+        this.nomina.setBrutoAnual( ((double)Math.round((this.calculo.calculoBase()*14) * 100d)/100d));
     }
     public void imprimirresultadoDatos(){
     String empresa ="La empresa "+this.trabajador.getEmpresas().getNombre()+ " con CIF: "+this.trabajador.getEmpresas().getCif();
@@ -63,7 +63,7 @@ public class CalculoUnTrabajador {
             " y se dio de alta el "+this.trabajador.getFechaAlta();
     
     String fechaNomina = this.fecha.toString();
-    String importes = "Salario base: "+salarioBase+ " prorrateo Mes: "+this.nomina.getValorProrrateo()
+    String importes = "Salario base: "+this.salarioBase+ " prorrateo Mes: "+this.nomina.getValorProrrateo()
             + " complemento mes: "+this.nomina.getImporteComplementoMes()+ " antiguedad: "+this.calculo.calculoAntiguedad();
 
     String descuentosTrabajador = "Contingencias Generales: "+this.calculo.getContingencias()+"% de "
@@ -74,7 +74,7 @@ public class CalculoUnTrabajador {
             "\nCuota de formacion: "+this.calculo.getFormacion()+"% de "+this.calculo.getCalculoEmpresarioBase()+
             " es: "+this.nomina.getFormacionTrabajador()+
             "\nIRPF: "+this.calculo.getIRPF()+ "% de "+this.calculo.getCalculoBaseIRPF()+" es "+this.calculo.calculoIRFP();
-    String devengosYDeducciones = "Devengos: "+devengos+ " deducciones: "+deducciones+" liquido a percibir: "+this.nomina.getLiquidoNomina();
+    String devengosYDeducciones = "Devengos: "+devengos+ " deducciones: "+deducciones+" liquido a percibir: "+((double)Math.round(this.nomina.getLiquidoNomina() * 100d)/100d);
 
     
     String pagosEmpresario = "Base sobre lo que se produce: "+this.nomina.getBaseEmpresario()+ 

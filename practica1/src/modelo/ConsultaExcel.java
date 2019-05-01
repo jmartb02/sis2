@@ -48,6 +48,7 @@ public class ConsultaExcel {
             rowIterator.next();
             while (rowIterator.hasNext()) {
                 Trabajadorbbdd trabajador = new Trabajadorbbdd();
+                Empresas empresa = new Empresas();
                 row = rowIterator.next();
           
                 if(row.getCell(0) != null){
@@ -80,14 +81,20 @@ public class ConsultaExcel {
                     trabajador.setFechaAlta(date);                    
                 }
                 if(row.getCell(6) != null){
-                    Empresas empresa = new Empresas();
+                    
                     empresa.setNombre(row.getCell(6).getStringCellValue());
-                    trabajador.setEmpresas(empresa);
                 }else{
-                    Empresas empresa = new Empresas();
-                    empresa.setNombre("");
-                    trabajador.setEmpresas(empresa);                  
+                    empresa.setNombre("");                 
                 }
+                
+                
+                if(row.getCell(7) != null){
+                    empresa.setCif(row.getCell(7).getStringCellValue());
+                }else{
+                    empresa.setNombre("");
+                 
+                }
+                
                 if(row.getCell(8) != null){
                    trabajador.setProrateo(row.getCell(8).getStringCellValue());
                 }else{
@@ -117,7 +124,7 @@ public class ConsultaExcel {
                 }else{
                     trabajador.setPaisOrigen("");
                 }
-                
+                trabajador.setEmpresas(empresa); 
                 listaTrabajadoresbbdd.add(trabajador);
 
 

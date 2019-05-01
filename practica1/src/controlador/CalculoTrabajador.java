@@ -26,7 +26,7 @@ public class CalculoTrabajador {
     }
     public Double calculoComplemento(){
         Double complemento = parametro.getComplementos().get(calculoIndex())/14;
-        return complemento;
+        return ((double)Math.round(complemento * 100d)/100d);
     }
     public Double redondear(double numero){
         return ((double)Math.round(numero * 100d)/100d);
@@ -37,7 +37,7 @@ public class CalculoTrabajador {
        int index = calculoIndex();
         ArrayList brutos = parametro.getSalariobase();
         Double bruto=  (Double) brutos.get(index);
-        return bruto/14;
+        return redondear(bruto/14);
         
     }
  //metodo para obtener el index para operar dependiendo de la categoria del trbaajador   
@@ -115,7 +115,7 @@ public class CalculoTrabajador {
         return parametro.getCuota().get(7);
     }
     public Double getIRPF(){
-        double bruto = getCalculoEmpresarioBase()-12000.0;
+        double bruto = (getCalculoEmpresarioBase()*12)-12000.0;
         int posicion = 0;
         while (bruto > 0){
             bruto -= 1000;
@@ -173,7 +173,8 @@ public class CalculoTrabajador {
    
    
    public Double getCalculoBaseIRPF(){
-       return calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento();
+       Double resultado = calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento();
+       return redondear(resultado);
    }
    
 }

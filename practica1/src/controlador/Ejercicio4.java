@@ -28,9 +28,11 @@ public class Ejercicio4 {
         
         for(Trabajadorbbdd trab: listaTrabajadores){
             if(date.before(trab.getFechaAlta())){
-                System.out.println("\n\n"+date.toString()+ " "+trab.getFechaAlta().toString()+"\n\n");
+               System.out.println("\n\n");
                CalculoUnTrabajador cal = new CalculoUnTrabajador(trab,parametro, date);
                cal.run();
+               System.out.println("\n\n");
+
             }
 
         }
