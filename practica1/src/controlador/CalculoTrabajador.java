@@ -11,15 +11,23 @@ import modelo.*;
 
 
 public class CalculoTrabajador {
-    private Parametro parametro;
-    private Trabajadorbbdd Trabajador;
     
-    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd Trabajador){
+private  Parametro parametro;
+    private  Trabajadorbbdd trabajador;
+    private double complemento;
+    
+    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd trabajador){
     this.parametro=parametro;
-    this.Trabajador=Trabajador;
+    this.trabajador=trabajador;
     }
+    Double calculoComplemento(){
+        Double complemento = parametro.getComplementos().get(calculoIndex())/14;
+        return complemento;
+}
+    
 //metodo que devuelve el salario base en bruto mensual
-   Double calculoBase(int index){
+   Double calculoBase(){
+       int index = calculoIndex();
         ArrayList brutos = parametro.getSalariobase();
         Double bruto=  (Double) brutos.get(index);
         return bruto/14;
@@ -28,7 +36,7 @@ public class CalculoTrabajador {
     int calculoIndex(){
         int index=0;
         Double bruto=0.0;
-        String categoria= Trabajador.getCategorias().getNombreCategoria();
+        String categoria= trabajador.getCategorias().getNombreCategoria();
         if(parametro.getCategorias().contains(categoria)){//para comprobar que existe la categoria
             index =parametro.getCategorias().indexOf(categoria);
         }else{
@@ -37,31 +45,50 @@ public class CalculoTrabajador {
    return index;
     }
     
-    Double calculoComplemento(){
-        Double complemento = parametro.getComplementos().get(calculoIndex())/14;
-        return complemento;
+   /* public void  calculoComplemento(){
+         complemento = parametro.getComplementos().get(calculoIndex())/14;
+        System.out.println(complemento);
     }
-    Double calculoAntiguedad(Trabajadorbbdd trabajador){
+    public Double getcomplemento() {
+        return this.complemento;
+    }*/
+    Double calculoAntiguedad(){
         //Extraemos el año y obtenemos los trienios
         Date alta = trabajador.getFechaAlta();
+        Double antiguedad =0.0;
         int yearNomina=2019;
         String year = alta.toString().substring(alta.toString().length()-4);
         int aux = Integer.parseInt(year);
         int trienios = (yearNomina-aux)/3;
-        Double antiguedad = parametro.getTrienio().get(trienios-1);;
+        if(trienios>=1){
+        antiguedad = parametro.getTrienio().get(trienios-1);;
+        }
         return antiguedad;
     }
     
-    Double calculoProrateo(Trabajadorbbdd trabajador){
+    Double calculoProrateo(){
         Double resultado=0.0;
         
     if(trabajador.getProrateo().equals("SI")){
         //calculo salario base y complementp
         Double complemento = parametro.getComplementos().get(calculoIndex())/14;
-        Double salarioBase= calculoBase(calculoIndex());//dado por el index de categoria
-        Double antiguedad = calculoAntiguedad(trabajador);
+        Double salarioBase= calculoBase();//dado por el index de categoria
+        Double antiguedad = calculoAntiguedad();
         resultado=(salarioBase+complemento+antiguedad)*2/12;
     }
     return resultado;
     }
+    Double getContigencia(){
+        Double contingencia = parametro.getCuota().get(0);
+        return contingencia;
+    }
+    Double getDesempleo(){
+        Double desempleo = parametro.getCuota().get(1);
+        return desempleo;
+    }
+    Double getFormacion(){
+        Double formacion = parametro.getCuota().get(2);
+        return formacion;
+    }
+   // Double calculoContingecias(){}
 }
