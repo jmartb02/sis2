@@ -68,17 +68,17 @@ private  Parametro parametro;
     
     Double calculoProrateo(){
         Double resultado=0.0;
-        
-    if(trabajador.getProrateo().equals("SI")){
-        //calculo salario base y complementp
+        //hay que hacer un if a la hora de mostrarlo, lo calculamos en todos los casos
+       //porque es necesario para los calculos de contingencias y demas
+    //if(trabajador.getProrateo().equals("SI")){
         Double complemento = parametro.getComplementos().get(calculoIndex())/14;
         Double salarioBase= calculoBase();//dado por el index de categoria
         Double antiguedad = calculoAntiguedad();
         resultado=(salarioBase+complemento+antiguedad)*2/12;
-    }
+   //}
     return resultado;
     }
-    Double getContigencia(){
+    Double getContingencias(){
         Double contingencia = parametro.getCuota().get(0);
         return contingencia;
     }
@@ -90,5 +90,17 @@ private  Parametro parametro;
         Double formacion = parametro.getCuota().get(2);
         return formacion;
     }
-   // Double calculoContingecias(){}
+   Double calculoContingecias(){
+    Double resultado = (calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento())*getContingencias()/100;
+    return resultado;       
+   }
+   Double calculoDesempleo(){
+    Double resultado = (calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento())*getDesempleo()/100;
+    return resultado;       
+   }
+   Double calculoFormacion(){
+    Double resultado = (calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento())*getFormacion()/100;
+    return resultado;       
+   }
+   
 }
