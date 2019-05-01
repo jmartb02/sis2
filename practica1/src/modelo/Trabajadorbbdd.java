@@ -24,6 +24,7 @@ public class Trabajadorbbdd  implements java.io.Serializable {
      private String codigoCuenta;
      private String iban;
      private String paisOrigen;
+     private String prorata;
      
      private Set nominas = new HashSet(0);
 
@@ -57,6 +58,14 @@ public class Trabajadorbbdd  implements java.io.Serializable {
        this.nominas = nominas;
     }
    
+    public String getProrateo() {
+        return this.prorata;
+    }
+    
+    public void setProrateo(String prorata) {
+        this.prorata = prorata;
+    }
+    
     public Integer getIdTrabajador() {
         return this.idTrabajador;
     }
@@ -151,5 +160,3 @@ public class Trabajadorbbdd  implements java.io.Serializable {
     }
 
 }
-
-

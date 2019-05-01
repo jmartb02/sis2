@@ -73,6 +73,12 @@ public class ConsultaExcel {
                 }else{
                     trabajador.setNifnie("");                    
                 }
+                 if(row.getCell(4) != null){
+                    trabajador.setFechaAlta(row.getCell(4).getDateCellValue());
+                }else{
+                     Date date = new Date(2010,1,1);
+                    trabajador.setFechaAlta(date);                    
+                }
                 if(row.getCell(6) != null){
                     Empresas empresa = new Empresas();
                     empresa.setNombre(row.getCell(6).getStringCellValue());
@@ -82,10 +88,17 @@ public class ConsultaExcel {
                     empresa.setNombre("");
                     trabajador.setEmpresas(empresa);                  
                 }
+                if(row.getCell(8) != null){
+                   trabajador.setProrateo(row.getCell(8).getStringCellValue());
+                }else{
+                   
+                    trabajador.setProrateo("");
+                                   
+                }
                 
-                if(row.getCell(7) != null){
+                if(row.getCell(9) != null){
                     Categorias categoria= new Categorias();
-                    categoria.setNombreCategoria(row.getCell(7).getStringCellValue());
+                    categoria.setNombreCategoria(row.getCell(9).getStringCellValue());
                     trabajador.setCategorias(categoria);
                 }else{
                     Categorias categoria= new Categorias();
@@ -166,7 +179,7 @@ public class ConsultaExcel {
    listanominas.setRetenciones(retenciones);
    listanominas.setCuota(cuotas);
    
-   System.out.print(listanominas.getCategorias());
+   //System.out.print(listanominas.getCategorias());
 
   return  listanominas;
      }
