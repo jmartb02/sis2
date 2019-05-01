@@ -5,6 +5,8 @@
  */
 package controlador;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import modelo.*;
@@ -12,25 +14,31 @@ import modelo.*;
 
 public class CalculoTrabajador {
     
-private  Parametro parametro;
+    private  Parametro parametro;
     private  Trabajadorbbdd trabajador;
     private double complemento;
+    private Date fecha;
     
-    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd trabajador){
+    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd trabajador, Date fecha){
     this.parametro=parametro;
     this.trabajador=trabajador;
+    this.fecha = fecha;
     }
-    Double calculoComplemento(){
+    public Double calculoComplemento(){
         Double complemento = parametro.getComplementos().get(calculoIndex())/14;
         return complemento;
-}
+    }
+    public Double redondear(double numero){
+        return ((double)Math.round(numero * 100d)/100d);
+    }
     
 //metodo que devuelve el salario base en bruto mensual
-   Double calculoBase(){
+   public Double calculoBase(){
        int index = calculoIndex();
         ArrayList brutos = parametro.getSalariobase();
         Double bruto=  (Double) brutos.get(index);
         return bruto/14;
+        
     }
  //metodo para obtener el index para operar dependiendo de la categoria del trbaajador   
     int calculoIndex(){
@@ -52,55 +60,120 @@ private  Parametro parametro;
     public Double getcomplemento() {
         return this.complemento;
     }*/
-    Double calculoAntiguedad(){
+    public Double calculoAntiguedad(){
         //Extraemos el año y obtenemos los trienios
         Date alta = trabajador.getFechaAlta();
         Double antiguedad =0.0;
-        int yearNomina=2019;
+        LocalDate localDate = this.fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int yearNomina=localDate.getYear();
         String year = alta.toString().substring(alta.toString().length()-4);
         int aux = Integer.parseInt(year);
         int trienios = (yearNomina-aux)/3;
         if(trienios>=1){
-        antiguedad = parametro.getTrienio().get(trienios-1);;
+        antiguedad = parametro.getTrienio().get(trienios-1);
         }
         return antiguedad;
     }
     
-    Double calculoProrateo(){
+    public Double calculoProrateo(){
         Double resultado=0.0;
         //hay que hacer un if a la hora de mostrarlo, lo calculamos en todos los casos
        //porque es necesario para los calculos de contingencias y demas
-    //if(trabajador.getProrateo().equals("SI")){
-        Double complemento = parametro.getComplementos().get(calculoIndex())/14;
-        Double salarioBase= calculoBase();//dado por el index de categoria
-        Double antiguedad = calculoAntiguedad();
-        resultado=(salarioBase+complemento+antiguedad)*2/12;
-   //}
-    return resultado;
+        if(trabajador.getProrateo().equals("SI")){
+            Double complemento = parametro.getComplementos().get(calculoIndex())/14;
+            Double salarioBase= calculoBase();//dado por el index de categoria
+            Double antiguedad = calculoAntiguedad();
+            resultado=(salarioBase+complemento+antiguedad)*2/12;
+        }
+    return redondear(resultado);
     }
-    Double getContingencias(){
+    public Double getContingencias(){
         Double contingencia = parametro.getCuota().get(0);
         return contingencia;
     }
-    Double getDesempleo(){
+    public Double getDesempleo(){
         Double desempleo = parametro.getCuota().get(1);
         return desempleo;
     }
-    Double getFormacion(){
+    public Double getFormacion(){
         Double formacion = parametro.getCuota().get(2);
         return formacion;
     }
-   Double calculoContingecias(){
-    Double resultado = (calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento())*getContingencias()/100;
-    return resultado;       
+    public Double getContingenciasEmpresario(){
+        return parametro.getCuota().get(3);
+    }
+    public Double getFogasa(){
+        return parametro.getCuota().get(4);
+    }
+    public Double getDesempleoEmpresario(){
+        return parametro.getCuota().get(5);
+    }
+    public Double getFormacionEmpresaio(){
+        return parametro.getCuota().get(6);
+    }
+    public Double getAccidentesEmpresario(){
+        return parametro.getCuota().get(7);
+    }
+    public Double getIRPF(){
+        double bruto = getCalculoEmpresarioBase()-12000.0;
+        int posicion = 0;
+        while (bruto > 0){
+            bruto -= 1000;
+            posicion++;
+        }
+        return parametro.getRetenciones().get(posicion);
+    }
+   public Double calculoContingecias(){
+    Double resultado = (getCalculoEmpresarioBase())*getContingencias()/100;
+    return redondear(resultado);       
    }
-   Double calculoDesempleo(){
-    Double resultado = (calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento())*getDesempleo()/100;
-    return resultado;       
+   public Double calculoDesempleo(){
+    Double resultado = (getCalculoEmpresarioBase())*getDesempleo()/100;
+    return redondear(resultado);        
    }
-   Double calculoFormacion(){
-    Double resultado = (calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento())*getFormacion()/100;
-    return resultado;       
+   public Double calculoFormacion(){
+    Double resultado = (getCalculoEmpresarioBase())*getFormacion()/100;
+    return redondear(resultado);         
+   }
+   
+   public Double calculoIRFP(){
+       Double resultado = (getCalculoBaseIRPF()*getIRPF()/100);
+       return redondear(resultado);  
+   }
+   public Double calculoContigenciasComunes(){
+       Double resultado = (getCalculoEmpresarioBase()*getContingenciasEmpresario()/100);
+       return redondear(resultado);  
+   }
+   public Double calculoDesempleoEmpresario(){
+       Double resultado = (getCalculoEmpresarioBase()*getDesempleoEmpresario()/100);
+       return redondear(resultado);
+   }
+   public Double calculoFormacionEmpresario(){
+       Double resultado = (getCalculoEmpresarioBase()*getFormacionEmpresaio()/100);
+       return redondear(resultado);
+   }
+   public Double calculoAccidentesEmpresario(){
+       Double resultado = (getCalculoEmpresarioBase()*getAccidentesEmpresario()/100);
+       return redondear(resultado);
+   }
+   public Double calculoFogasa(){
+       Double resultado = (getCalculoEmpresarioBase()*getFogasa()/100);
+       return redondear(resultado);
+   }
+   
+   public Double getCalculoEmpresarioBase(){
+       if(trabajador.getProrateo().equals("SI")){
+           return redondear(calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento());
+       }else{
+           return redondear(((calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento())*14)/12);
+       }
+       
+
+   }
+   
+   
+   public Double getCalculoBaseIRPF(){
+       return calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento();
    }
    
 }
