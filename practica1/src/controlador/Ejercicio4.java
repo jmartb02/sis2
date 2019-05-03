@@ -33,7 +33,6 @@ public class Ejercicio4 {
                System.out.println("\n\n");
                 LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 int month = localDate.getMonthValue();
-                System.out.println(month);
                 CalculoUnTrabajador cal = new CalculoUnTrabajador(trab,parametro, date, false, "");
                 cal.run();
                 

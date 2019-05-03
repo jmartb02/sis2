@@ -67,10 +67,17 @@ public class CalculoTrabajador {
         Date alta = trabajador.getFechaAlta();
         Double antiguedad =0.0;
         LocalDate localDate = this.fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate trabajadorDate = alta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int yearNomina=localDate.getYear();
-        String year = alta.toString().substring(alta.toString().length()-4);
-        int aux = Integer.parseInt(year);
-        int trienios = (yearNomina-aux)/3;
+        int year = trabajadorDate.getYear();
+        int trienios = (yearNomina-year)/3;
+        
+        int mesNomina = localDate.getMonthValue();
+        int mes = trabajadorDate.getMonthValue();
+        if((yearNomina-year) % 3 == 0 && mesNomina <= mes){
+            trienios--;
+        }
+            
         if(trienios>=1){
         antiguedad = parametro.getTrienio().get(trienios-1);
         }
@@ -85,7 +92,7 @@ public class CalculoTrabajador {
             Double complemento = parametro.getComplementos().get(calculoIndex())/14;
             Double salarioBase= calculoBase();//dado por el index de categoria
             Double antiguedad = calculoAntiguedad();
-            resultado=(salarioBase+complemento+antiguedad)*2/12;
+            resultado=(salarioBase+redondear(complemento)+antiguedad)/6;
         }
     return redondear(resultado);
     }
@@ -198,7 +205,44 @@ public class CalculoTrabajador {
    }
    
    public Double getBrutoAnual(){
-        return redondear(getCalculoEmpresarioBase()*12);
+       LocalDate localDate = this.fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+       Date alta = trabajador.getFechaAlta();
+       LocalDate altaTrabajador = alta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+       int index = calculoIndex();
+            Double brutos = parametro.getSalariobase().get(index);
+            Double complementos = parametro.getComplementos().get(index);
+       double brutoAnual = brutos+complementos;
+        int yearNomina=localDate.getYear();
+        int yearAlta = altaTrabajador.getYear();
+        int tiempoTrabajador = (yearNomina - yearAlta);   
+        int trienios = tiempoTrabajador/3; 
+        
+        if((tiempoTrabajador%3) != 0 || trienios == 0){  
+            
+            if(trienios > 0){
+                
+                brutoAnual += 14*parametro.getTrienio().get(trienios-1);
+            }           
+        }else{
+            if(trienios == 1){
+                brutoAnual += (12-altaTrabajador.getMonthValue())*parametro.getTrienio().get(trienios-1);
+
+            }else{
+                brutoAnual += altaTrabajador.getMonthValue()*parametro.getTrienio().get(trienios-2)+ (12-altaTrabajador.getMonthValue())*parametro.getTrienio().get(trienios-1);
+            }       
+            if(altaTrabajador.getMonthValue() > 6){
+                
+                if(trienios == 1){
+                    brutoAnual += parametro.getTrienio().get(trienios-1);
+                }else{
+                    brutoAnual += parametro.getTrienio().get(trienios-1) + parametro.getTrienio().get(trienios-2);
+                }
+            }else{
+               brutoAnual += 2*parametro.getTrienio().get(trienios-1); 
+            }
+        }
+       
+        return redondear(brutoAnual);
    }
    
    

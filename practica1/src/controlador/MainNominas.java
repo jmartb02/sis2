@@ -26,7 +26,7 @@ public class MainNominas {
         ConsultaExcel consulta = new ConsultaExcel("src/resources/SistemasInformacionII.xlsx");
         listaTrabajadores= consulta.leer();
         Parametro parametro = consulta.leer1();
-        
+
         /*Ejercicio1 ejercicio1 = new Ejercicio1();
         Ejercicio2 ejercicio2 = new Ejercicio2();
         Ejercicio3 ejercicio3 = new Ejercicio3();

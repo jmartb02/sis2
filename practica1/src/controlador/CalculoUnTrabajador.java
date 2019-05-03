@@ -56,7 +56,8 @@ public class CalculoUnTrabajador {
         this.costeTotalParaEmpresario = this.calculo.calculoContigenciasComunes()+this.calculo.calculoDesempleoEmpresario()+
                 this.calculo.calculoFormacionEmpresario()+this.calculo.calculoAccidentesEmpresario()+
                 this.calculo.calculoFogasa();
-        this.costeTotalTrabajador = ((double)Math.round((this.costeTotalParaEmpresario+this.devengos) * 100d)/100d);
+        this.costeTotalParaEmpresario = this.calculo.redondear(this.costeTotalParaEmpresario);
+        this.costeTotalTrabajador = this.calculo.redondear(this.costeTotalParaEmpresario+this.devengos);
         this.nomina.setBrutoAnual( this.calculo.getBrutoAnual());
     }
     public void imprimirresultadoDatos(){
@@ -66,7 +67,7 @@ public class CalculoUnTrabajador {
             +" con un bruto anual de "+this.nomina.getBrutoAnual()+ " tiene el siguiente IBAN: "+this.trabajador.getIban()+
             " y se dio de alta el "+this.trabajador.getFechaAlta();
     
-    String fechaNomina = this.fecha.toString();
+    String fechaNomina = "Nomina: "+this.fecha.toString();
     String importes = "Salario base: "+this.salarioBase+ " prorrateo Mes: "+this.nomina.getValorProrrateo()
             + " complemento mes: "+this.nomina.getImporteComplementoMes()+ " antiguedad: "+this.calculo.calculoAntiguedad();
 
