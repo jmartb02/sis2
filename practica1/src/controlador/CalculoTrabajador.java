@@ -18,11 +18,13 @@ public class CalculoTrabajador {
     private  Trabajadorbbdd trabajador;
     private double complemento;
     private Date fecha;
+    private boolean esExtra;
     
-    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd trabajador, Date fecha){
+    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd trabajador, Date fecha, boolean esExtra){
     this.parametro=parametro;
     this.trabajador=trabajador;
     this.fecha = fecha;
+    this.esExtra = esExtra;
     }
     public Double calculoComplemento(){
         Double complemento = parametro.getComplementos().get(calculoIndex())/14;
@@ -124,15 +126,24 @@ public class CalculoTrabajador {
         return parametro.getRetenciones().get(posicion);
     }
    public Double calculoContingecias(){
-    Double resultado = (getCalculoEmpresarioBase())*getContingencias()/100;
+       Double resultado = 0.0;
+       if(!esExtra){
+          resultado = (getCalculoEmpresarioBase())*getContingencias()/100; 
+       }
     return redondear(resultado);       
    }
    public Double calculoDesempleo(){
-    Double resultado = (getCalculoEmpresarioBase())*getDesempleo()/100;
+        Double resultado = 0.0;
+       if(!esExtra){
+            resultado = (getCalculoEmpresarioBase())*getDesempleo()/100;
+       }
     return redondear(resultado);        
    }
    public Double calculoFormacion(){
-    Double resultado = (getCalculoEmpresarioBase())*getFormacion()/100;
+       Double resultado = 0.0;
+       if(!esExtra){
+            resultado = (getCalculoEmpresarioBase())*getFormacion()/100;
+       }
     return redondear(resultado);         
    }
    
@@ -141,23 +152,38 @@ public class CalculoTrabajador {
        return redondear(resultado);  
    }
    public Double calculoContigenciasComunes(){
-       Double resultado = (getCalculoEmpresarioBase()*getContingenciasEmpresario()/100);
+       Double resultado = 0.0;
+       if(!esExtra){
+        resultado = (getCalculoEmpresarioBase()*getContingenciasEmpresario()/100);
+       }
        return redondear(resultado);  
    }
    public Double calculoDesempleoEmpresario(){
-       Double resultado = (getCalculoEmpresarioBase()*getDesempleoEmpresario()/100);
+       Double resultado = 0.0;
+       if(!esExtra){
+            resultado = (getCalculoEmpresarioBase()*getDesempleoEmpresario()/100);
+       }    
        return redondear(resultado);
    }
    public Double calculoFormacionEmpresario(){
-       Double resultado = (getCalculoEmpresarioBase()*getFormacionEmpresaio()/100);
+       Double resultado = 0.0;
+       if(!esExtra){
+            resultado = (getCalculoEmpresarioBase()*getFormacionEmpresaio()/100);
+       }
        return redondear(resultado);
    }
    public Double calculoAccidentesEmpresario(){
-       Double resultado = (getCalculoEmpresarioBase()*getAccidentesEmpresario()/100);
+       Double resultado = 0.0;
+       if(!esExtra){
+            resultado = (getCalculoEmpresarioBase()*getAccidentesEmpresario()/100);
+       }
        return redondear(resultado);
    }
    public Double calculoFogasa(){
-       Double resultado = (getCalculoEmpresarioBase()*getFogasa()/100);
+       Double resultado = 0.0;
+       if(!esExtra){
+            resultado = (getCalculoEmpresarioBase()*getFogasa()/100);
+       }
        return redondear(resultado);
    }
    
@@ -169,6 +195,10 @@ public class CalculoTrabajador {
        }
        
 
+   }
+   
+   public Double getBrutoAnual(){
+        return redondear(getCalculoEmpresarioBase()*12);
    }
    
    

@@ -27,11 +27,13 @@ public class CalculoUnTrabajador {
     private Parametro parametro;
     private CalculoTrabajador calculo;
     private Date fecha;
+    private boolean esExtra;
     
-    public CalculoUnTrabajador(Trabajadorbbdd trabajador,Parametro parametro, Date fecha){
+    public CalculoUnTrabajador(Trabajadorbbdd trabajador,Parametro parametro, Date fecha, boolean esExtra, String mes){
+        this.esExtra = esExtra;
         this.trabajador = trabajador;
         this.parametro = parametro;
-        this.calculo = new CalculoTrabajador(this.parametro, trabajador, fecha);
+        this.calculo = new CalculoTrabajador(this.parametro, trabajador, fecha, esExtra);
         this.fecha = fecha;
         this.nomina = new Nomina();
     }
@@ -53,7 +55,7 @@ public class CalculoUnTrabajador {
                 this.calculo.calculoFormacionEmpresario()+this.calculo.calculoAccidentesEmpresario()+
                 this.calculo.calculoFogasa();
         this.costeTotalTrabajador = ((double)Math.round((this.costeTotalParaEmpresario+this.devengos) * 100d)/100d);
-        this.nomina.setBrutoAnual( ((double)Math.round((this.calculo.calculoBase()*14) * 100d)/100d));
+        this.nomina.setBrutoAnual( this.calculo.getBrutoAnual());
     }
     public void imprimirresultadoDatos(){
     String empresa ="La empresa "+this.trabajador.getEmpresas().getNombre()+ " con CIF: "+this.trabajador.getEmpresas().getCif();
@@ -84,7 +86,9 @@ public class CalculoUnTrabajador {
             "\nAccidentes de trabajo "+this.calculo.getAccidentesEmpresario()+"% "+this.calculo.calculoAccidentesEmpresario()+
             "\nFOGASA "+this.calculo.getFogasa()+"% "+this.calculo.calculoFogasa();
     String total = "Coste total para el empresario: "+costeTotalParaEmpresario+"\nCoste total trabajador "+this.costeTotalTrabajador;
-   
+   if(this.esExtra){
+       empresa = "EXTRA\n"+empresa;
+   }
     String datos = empresa+ "\n"+trabajador+"\n"+fechaNomina+"\n"+importes+"\n"+descuentosTrabajador+"\n"+devengosYDeducciones+
             "\n"+pagosEmpresario+"\n"+total;
     

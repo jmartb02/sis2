@@ -7,6 +7,8 @@ package controlador;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -27,10 +29,24 @@ public class Ejercicio4 {
         Date date = formatter.parse(fecha);
         
         for(Trabajadorbbdd trab: listaTrabajadores){
-            if(date.before(trab.getFechaAlta())){
+            if(date.after(trab.getFechaAlta())){
                System.out.println("\n\n");
-               CalculoUnTrabajador cal = new CalculoUnTrabajador(trab,parametro, date);
-               cal.run();
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int month = localDate.getMonthValue();
+                System.out.println(month);
+                CalculoUnTrabajador cal = new CalculoUnTrabajador(trab,parametro, date, false, "");
+                cal.run();
+                
+                if(month == 6){
+                    System.out.println("\n\n");
+                  CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "JUNIO");
+                calExtra.run();  
+                }else if(month == 12){
+                   System.out.println("\n\n");
+                  CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "DICIEMBRE");
+                calExtra.run();  
+                }
+
                System.out.println("\n\n");
 
             }
