@@ -5,8 +5,10 @@
  */
 package controlador;
 
+import Modelo.Parametro;
+import Modelo.Trabajadorbbdd;
+import Modelo.ConsultaExcel;
 import java.io.FileNotFoundException;
-import modelo.*;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,15 +29,16 @@ public class MainNominas {
         listaTrabajadores= consulta.leer();
         Parametro parametro = consulta.leer1();
 
-        /*Ejercicio1 ejercicio1 = new Ejercicio1();
+        Ejercicio1 ejercicio1 = new Ejercicio1();
         Ejercicio2 ejercicio2 = new Ejercicio2();
         Ejercicio3 ejercicio3 = new Ejercicio3();
         ejercicio1.run();
         ejercicio2.run(listaTrabajadores);
         ejercicio3.run(listaTrabajadores);
+        consulta.escribir(listaTrabajadores);
         
-        consulta.escribir(listaTrabajadores);*/
         Ejercicio4 ejercicio4 = new Ejercicio4(listaTrabajadores,parametro);
+        
     }
     
 

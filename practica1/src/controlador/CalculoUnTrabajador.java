@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 package controlador;
+import Modelo.Parametro;
+import Modelo.Trabajadorbbdd;
+import Modelo.Nomina;
 import java.util.Date;
 import vista.*;
-import modelo.*;
 
 /**
  *

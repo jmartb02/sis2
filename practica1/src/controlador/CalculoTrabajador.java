@@ -5,11 +5,12 @@
  */
 package controlador;
 
+import Modelo.Parametro;
+import Modelo.Trabajadorbbdd;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import modelo.*;
 
 
 public class CalculoTrabajador {

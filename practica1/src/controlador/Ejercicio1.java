@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package controlador;
+import Modelo.Consulta;
 import java.util.Scanner;
 import vista.*;
-import modelo.*;
 /**
  *
  * @author Sheik

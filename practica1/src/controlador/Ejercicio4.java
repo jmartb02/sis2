@@ -5,6 +5,8 @@
  */
 package controlador;
 
+import Modelo.Parametro;
+import Modelo.Trabajadorbbdd;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -12,7 +14,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import modelo.*;
 import vista.*;
 
 
