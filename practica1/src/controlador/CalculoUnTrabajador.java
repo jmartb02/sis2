@@ -28,8 +28,10 @@ public class CalculoUnTrabajador {
     private CalculoTrabajador calculo;
     private Date fecha;
     private boolean esExtra;
+    private String mes;
     
     public CalculoUnTrabajador(Trabajadorbbdd trabajador,Parametro parametro, Date fecha, boolean esExtra, String mes){
+        this.mes = mes;
         this.esExtra = esExtra;
         this.trabajador = trabajador;
         this.parametro = parametro;
@@ -87,7 +89,7 @@ public class CalculoUnTrabajador {
             "\nFOGASA "+this.calculo.getFogasa()+"% "+this.calculo.calculoFogasa();
     String total = "Coste total para el empresario: "+costeTotalParaEmpresario+"\nCoste total trabajador "+this.costeTotalTrabajador;
    if(this.esExtra){
-       empresa = "EXTRA\n"+empresa;
+       empresa = "EXTRA "+this.mes+"\n"+empresa;
    }
     String datos = empresa+ "\n"+trabajador+"\n"+fechaNomina+"\n"+importes+"\n"+descuentosTrabajador+"\n"+devengosYDeducciones+
             "\n"+pagosEmpresario+"\n"+total;
