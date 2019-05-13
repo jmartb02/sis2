@@ -56,13 +56,6 @@ public class CalculoTrabajador {
    return index;
     }
     
-   /* public void  calculoComplemento(){
-         complemento = parametro.getComplementos().get(calculoIndex())/14;
-        System.out.println(complemento);
-    }
-    public Double getcomplemento() {
-        return this.complemento;
-    }*/
     public Double calculoAntiguedad(){
         //Extraemos el año y obtenemos los trienios
         Date alta = trabajador.getFechaAlta();
@@ -215,7 +208,6 @@ public class CalculoTrabajador {
            return redondear(calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento());
        }else{
         double resultado = calculoBase()+calculoAntiguedad()+calculoComplemento();
-        System.out.println(resultado);
         resultado += calculoBase()/6 + calculoComplemento()/6; 
         
         int index = calculoIndex();    
@@ -251,7 +243,6 @@ public class CalculoTrabajador {
         int yearAlta = altaTrabajador.getYear();
         int tiempoTrabajador = (yearNomina - yearAlta);   
         int trienios = tiempoTrabajador/3; 
-        System.out.println("Trabajado "+tiempoTrabajador+" "+trienios);
         
         if(tiempoTrabajador % 3 == 0){
             if(trienios > 1){
@@ -265,11 +256,9 @@ public class CalculoTrabajador {
             }
         }else{
             if(trienios > 0){
-                System.out.println("ashdfiohof");
                 brutoAnual += 12*(mensual+parametro.getTrienio().get(trienios-1));
             }
         }
-        System.out.println("Brutoasdfasdf "+brutoAnual);
 
         
         if(trabajador.getProrateo().equals("SI")){
@@ -357,81 +346,6 @@ public class CalculoTrabajador {
         
         return redondear(brutoAnual);
    }
-   
-   /*public Double getBrutoAnual(){
-       LocalDate localDate = this.fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-       Date alta = trabajador.getFechaAlta();
-       LocalDate altaTrabajador = alta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-       int index = calculoIndex();
-            Double brutos = parametro.getSalariobase().get(index);
-            Double complementos = parametro.getComplementos().get(index);
-       double brutoAnual = brutos+complementos;
-        int yearNomina=localDate.getYear();
-        int yearAlta = altaTrabajador.getYear();
-        int tiempoTrabajador = (yearNomina - yearAlta);   
-        int trienios = tiempoTrabajador/3; 
-        System.out.println(trabajador.getProrateo()+ " "+trienios);
-        if(trabajador.getProrateo().equals("SI") && trienios > 1){
-            if(tiempoTrabajador%3 == 2){
-                double n = (brutos + complementos)/14;
-                brutoAnual = 0;
-                brutoAnual += 12*(n+parametro.getTrienio().get(trienios-1));
-                brutoAnual += 11*((n+parametro.getTrienio().get(trienios-1))/6);
-                brutoAnual += 1*((n+parametro.getTrienio().get(trienios))/6);
-                //brutoAnual += 12*((n+parametro.getTrienio().get(trienios-1))/6);
-            }else if(tiempoTrabajador%3 != 0 ){
-                double n = (brutos + complementos)/14;
-                brutoAnual = 0;
-                brutoAnual += 12*(n+parametro.getTrienio().get(trienios-1));
-                brutoAnual += 12*((n+parametro.getTrienio().get(trienios-1))/6);
-
-            }else{
-                System.out.println("BLAS");
-                double n = (brutos + complementos)/14;
-                brutoAnual = 0;
-                brutoAnual += (1+altaTrabajador.getMonthValue())*(n+parametro.getTrienio().get(trienios-2));
-                brutoAnual += (12 - (altaTrabajador.getMonthValue()+1))*(n+parametro.getTrienio().get(trienios-1));
-                brutoAnual += 6*((n+parametro.getTrienio().get(trienios-1))/6);
-                brutoAnual += 6*((n+parametro.getTrienio().get(trienios-2))/6);
-            }
-        }else{
-            System.out.println("AWQUI "+tiempoTrabajador);
-            if((tiempoTrabajador%3) != 0 || trienios == 0){  
-            
-                if(trienios > 0){
-                
-                    brutoAnual += 14*parametro.getTrienio().get(trienios-1);
-                }           
-            }else{
-                if(trienios == 1){
-                    brutoAnual += (12-altaTrabajador.getMonthValue())*parametro.getTrienio().get(trienios-1);
-
-                }else{
-                    brutoAnual += altaTrabajador.getMonthValue()*parametro.getTrienio().get(trienios-2)+ (12-altaTrabajador.getMonthValue())*parametro.getTrienio().get(trienios-1);
-                    System.out.println("Brtuo "+brutoAnual);
-                }       
-                if(altaTrabajador.getMonthValue() > 6){
-                
-                    if(trienios == 1){
-                        brutoAnual += parametro.getTrienio().get(trienios-1);
-                    }else{
-                        brutoAnual += parametro.getTrienio().get(trienios-1) + parametro.getTrienio().get(trienios-2);            
-                    }
-                }else{
-               brutoAnual += 2*parametro.getTrienio().get(trienios-1); 
-                }   
-            
-            
-            }  
-        }
-        
-        
-        
-       
-       
-        return redondear(brutoAnual);
-   }*/
-   
    
    public Double getCalculoBaseIRPF(){
        Double resultado = calculoBase()+ calculoProrateo()+calculoAntiguedad()+calculoComplemento();
