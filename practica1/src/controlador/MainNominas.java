@@ -5,9 +5,9 @@
  */
 package controlador;
 
-import Modelo.Parametro;
-import Modelo.Trabajadorbbdd;
-import Modelo.ConsultaExcel;
+import modelo.Parametro;
+import modelo.Trabajadorbbdd;
+import modelo.ConsultaExcel;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
@@ -28,16 +28,22 @@ public class MainNominas {
         ConsultaExcel consulta = new ConsultaExcel("src/resources/SistemasInformacionII.xlsx");
         listaTrabajadores= consulta.leer();
         Parametro parametro = consulta.leer1();
-
-        Ejercicio1 ejercicio1 = new Ejercicio1();
-        Ejercicio2 ejercicio2 = new Ejercicio2();
-        Ejercicio3 ejercicio3 = new Ejercicio3();
-        ejercicio1.run();
-        ejercicio2.run(listaTrabajadores);
-        ejercicio3.run(listaTrabajadores);
-        consulta.escribir(listaTrabajadores);
+        createPdf pdf = new createPdf();
+        System.out.println(listaTrabajadores.get(1).getCodigoCuenta());
+     
+        pdf.createPdf(listaTrabajadores.get(7));
         
-        Ejercicio4 ejercicio4 = new Ejercicio4(listaTrabajadores,parametro);
+
+        //Ejercicio1 ejercicio1 = new Ejercicio1();
+        //Ejercicio2 ejercicio2 = new Ejercicio2();
+        //Ejercicio3 ejercicio3 = new Ejercicio3();
+        //ejercicio1.run();
+        //ejercicio2.run(listaTrabajadores);
+        //ejercicio3.run(listaTrabajadores);
+        //consulta.escribir(listaTrabajadores);
+        
+        //Ejercicio4 ejercicio4 = new Ejercicio4(listaTrabajadores,parametro);
+        
         
     }
     
