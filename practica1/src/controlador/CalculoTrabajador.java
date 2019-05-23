@@ -76,13 +76,7 @@ public class CalculoTrabajador {
    return index;
     }
     
-   /* public void  calculoComplemento(){
-         complemento = parametro.getComplementos().get(calculoIndex())/14;
-        System.out.println(complemento);
-    }
-    public Double getcomplemento() {
-        return this.complemento;
-    }*/
+
     public Double calculoAntiguedad(){
         //Extraemos el año y obtenemos los trienios
         Date alta = trabajador.getFechaAlta();

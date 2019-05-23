@@ -40,7 +40,7 @@ import modelo.Trabajadorbbdd;
  */
 public class createPdf  {
    public void createPdf(CalculoUnTrabajador trabajador) throws IOException {
-       String dest = "src/resources/"+trabajador.getTrabajador().getNombre()+trabajador.getTrabajador().getApellido1()+".pdf";
+       String dest = "src/resources/"+trabajador.getTrabajador().getNombre()+trabajador.getTrabajador().getNifnie()+".pdf";
     PdfWriter writer = new PdfWriter(dest);
     PdfDocument pdfDoc = new PdfDocument(writer);
     Document doc = new Document(pdfDoc, PageSize.LETTER);
