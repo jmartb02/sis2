@@ -8,8 +8,7 @@ package controlador;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
-import Modelo.CrearXML;
-import Modelo.Trabajadorbbdd;
+import modelo.*;
 
 /**
  *

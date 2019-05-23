@@ -38,17 +38,21 @@ public class Ejercicio4 {
                 CalculoUnTrabajador cal = new CalculoUnTrabajador(trab,parametro, date, false, "");
                 cal.run();
                 createPdf pdf = new createPdf();
-                    pdf.createPdf(cal);
+                    pdf.createPdf(cal,"");
                     
                 
                 if(month == 6){
                     System.out.println("\n\n");
-                  CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "JUNIO");
-                calExtra.run();  
+                    CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "JUNIO");
+                    calExtra.run();  
+                    createPdf pdf2 = new createPdf();
+                    pdf2.createPdf(calExtra,"EXTRA");
                 }else if(month == 12){
-                   System.out.println("\n\n");
-                  CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "DICIEMBRE");
-                calExtra.run();  
+                    System.out.println("\n\n");
+                    CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "DICIEMBRE");
+                    calExtra.run(); 
+                    createPdf pdf2 = new createPdf();
+                    pdf2.createPdf(calExtra,"EXTRA");
                 }
 
                System.out.println("\n\n");

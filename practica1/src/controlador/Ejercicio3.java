@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package controlador;
-import Modelo.CrearXML;
-import Modelo.Trabajadorbbdd;
+import modelo.*;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;

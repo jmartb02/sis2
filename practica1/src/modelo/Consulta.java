@@ -103,4 +103,20 @@ public class Consulta {
        
        return frase;
     }
+    
+    public static void escribir(List<Trabajadorbbdd> trabajadores){
+        Transaction transaction = session.beginTransaction();
+        for(Trabajadorbbdd trabajador:trabajadores){
+            if(trabajador.getNifnie() != ""){
+                session.saveOrUpdate(trabajador);
+                session.saveOrUpdate(trabajador.getNominas());
+            }
+        }
+
+        
+
+
+      
+        transaction.commit();
+    }
 }

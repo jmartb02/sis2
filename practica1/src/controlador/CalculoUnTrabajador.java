@@ -112,6 +112,7 @@ public class CalculoUnTrabajador {
     public void setMes(String mes) {
         this.mes = mes;
     }
+    
 
     private double salarioBase;
      
@@ -128,6 +129,8 @@ public class CalculoUnTrabajador {
     private Date fecha;
     private boolean esExtra;
     private String mes;
+    
+    private double calculoEmpresarioBase;
     
     public CalculoUnTrabajador(Trabajadorbbdd trabajador,Parametro parametro, Date fecha, boolean esExtra, String mes){
         this.mes = mes;
@@ -156,6 +159,8 @@ public class CalculoUnTrabajador {
         this.setCosteTotalParaEmpresario((double) this.getCalculo().redondear(this.getCosteTotalParaEmpresario()));
         this.setCosteTotalTrabajador((double) this.getCalculo().redondear(this.getCosteTotalParaEmpresario() + this.getDevengos()));
         this.getNomina().setBrutoAnual(this.getCalculo().getBrutoAnual());
+        
+        this.nomina.setTrabajadorbbdd(this.trabajador);
     }
     public void imprimirresultadoDatos() throws IOException{
     String empresa ="La empresa "+this.getTrabajador().getEmpresas().getNombre()+ " con CIF: "+this.getTrabajador().getEmpresas().getCif();
