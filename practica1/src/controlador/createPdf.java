@@ -33,13 +33,14 @@ import java.util.Set;
 import modelo.Trabajadorbbdd;
 
 
+
 /**
  *
  * @author cao
  */
-public class createPdf {
-   public void createPdf(Trabajadorbbdd trabajador) throws IOException {
-       String dest = "src/resources/codigo.pdf";
+public class createPdf  {
+   public void createPdf(CalculoUnTrabajador trabajador) throws IOException {
+       String dest = "src/resources/"+trabajador.getTrabajador().getNombre()+trabajador.getTrabajador().getApellido1()+".pdf";
     PdfWriter writer = new PdfWriter(dest);
     PdfDocument pdfDoc = new PdfDocument(writer);
     Document doc = new Document(pdfDoc, PageSize.LETTER);
@@ -64,9 +65,16 @@ empleado1.setWidth(500);
 
 Table tabla3 =new Table(1);
 
+Table tabla4 = new Table(1);
+tabla4.setWidth(500);
+
+Table tabla5 = new Table(2);
+tabla5.setWidth(500);
 
 
 
+
+//celda empleado
 Cell empleCell = new Cell();
 empleCell.add(new Paragraph("Informacion Empleado")).setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(20).setUnderline();
 empleCell.setBorder(Border.NO_BORDER);
@@ -113,9 +121,9 @@ cell6.setBorder(Border.NO_BORDER);
 tabla3.addCell(cell6);
 
 //datos empleado 
-Paragraph nom = new Paragraph(" NOMBRE: "+trabajador.getNombre()+ " | "+
-                              " APELLIDO: "+trabajador.getApellido1()+ " | "+
-                               " NIF/NIE: "+trabajador.getNifnie()
+Paragraph nom = new Paragraph(" NOMBRE: "+trabajador.getTrabajador().getNombre()+ " | "+
+                              " APELLIDO: "+trabajador.getTrabajador().getApellido1()+ " | "+
+                               " NIF/NIE: "+trabajador.getTrabajador().getNifnie()
                              ).setFontSize(15);
        ;
 Cell cell1 = new Cell();
@@ -127,8 +135,8 @@ cell1.add(nom);
 tabla1.addCell(cell1);
 
 //datos empleado 
-Paragraph nom1 = new Paragraph(" IBAN: "+trabajador.getCodigoCuenta()+ " | "+
-                              " Fecha de Alta: "+trabajador.getFechaAlta()
+Paragraph nom1 = new Paragraph(" IBAN: "+trabajador.getTrabajador().getCodigoCuenta()+ " | "+
+                              " Fecha de Alta: "+trabajador.getFecha()
                              ).setFontSize(15);
        
 Cell cellExtra = new Cell();
@@ -139,6 +147,36 @@ cellExtra.setTextAlignment(TextAlignment.CENTER);
 cellExtra.add(nom1);
 empleado1.addCell(cellExtra);
 
+//celda nomina
+Cell nomina = new Cell();
+nomina.add(new Paragraph("Nomina")).setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(20).setUnderline();
+nomina.setBorder(Border.NO_BORDER);
+tabla4.addCell(nomina);
+
+//celda datos nomina
+Cell nomina1 = new Cell();
+nomina1.setBorder(new SolidBorder(1));
+nomina1.setWidth(500);
+nomina1.setHeight(300);
+nomina1.add(new Paragraph("  ------------------------------------------Cantidad-----------imp. Unit--------Dev----------Deducc")).setTextAlignment(TextAlignment.LEFT);;
+//nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT).setPaddingLeft(15);;
+nomina1.add(new Paragraph("  salario base:"+"                              30 dias    "+"            "+trabajador.getCalculo().calculoMes()+"            "+trabajador.getCalculo().calculoBase())).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("  prorata:"+"                                      30 dias "+"               "+trabajador.getCalculo().prorataMes()+"               "+trabajador.getCalculo().calculoProrateo())).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("  complemento:"+"                            30 dias"+"               "+trabajador.getCalculo().complementoMes()+"               "+trabajador.getCalculo().calculoComplemento())).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("  Antiguedad:                               "+trabajador.getCalculo().calculoTrienio()+" Trienios"+"            "+trabajador.getCalculo().AntiguedadMes()+"               "+trabajador.getCalculo().calculoAntiguedad())).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("  Contingencias generales:           4,7%")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("  Desempleo:                                 1,6%")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("  Cuota de formacion:                   0,1%")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
+nomina1.add(new Paragraph("  IRPF:                          %")).setTextAlignment(TextAlignment.LEFT);;
+tabla5.addCell(nomina1);
+
 
 empty.add(tabla2);//cabecera
 empty.add(tabla3);//separador
@@ -146,6 +184,9 @@ empty.add(empleado);//cabecera empleado
 empty.add(tabla1);//informacion empleado
 empty.add(empleado1);
 empty.add(tabla3);//separador
+empty.add(tabla4);//cabecera nomina
+empty.add(tabla5);
+
 doc.add(empty);
 doc.close();
     
