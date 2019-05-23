@@ -25,13 +25,14 @@ public class MainNominas {
      */
     public static void main(String[] args) throws IOException, ParserConfigurationException, FileNotFoundException, ParseException {
         ArrayList<Trabajadorbbdd> listaTrabajadores ;
+        
         ConsultaExcel consulta = new ConsultaExcel("src/resources/SistemasInformacionII.xlsx");
         listaTrabajadores= consulta.leer();
         Parametro parametro = consulta.leer1();
-        createPdf pdf = new createPdf();
+        /*createPdf pdf = new createPdf();
         System.out.println(listaTrabajadores.get(1).getCodigoCuenta());
      
-        pdf.createPdf(listaTrabajadores.get(7));
+        pdf.createPdf(listaTrabajadores.get(7));*/
         
 
         //Ejercicio1 ejercicio1 = new Ejercicio1();
@@ -42,7 +43,7 @@ public class MainNominas {
         //ejercicio3.run(listaTrabajadores);
         //consulta.escribir(listaTrabajadores);
         
-        //Ejercicio4 ejercicio4 = new Ejercicio4(listaTrabajadores,parametro);
+        Ejercicio4 ejercicio4 = new Ejercicio4(listaTrabajadores,parametro);
         
         
     }

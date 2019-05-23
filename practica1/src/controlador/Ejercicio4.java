@@ -5,8 +5,9 @@
  */
 package controlador;
 
-import Modelo.Parametro;
-import Modelo.Trabajadorbbdd;
+import java.io.IOException;
+import modelo.Parametro;
+import modelo.Trabajadorbbdd;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ import vista.*;
 public class Ejercicio4 {
     private ArrayList<Trabajadorbbdd> listaTrabajadores;
     
-    public Ejercicio4(ArrayList<Trabajadorbbdd> listaTrabajadores, Parametro parametro) throws ParseException{
+    public Ejercicio4(ArrayList<Trabajadorbbdd> listaTrabajadores, Parametro parametro) throws ParseException, IOException{
         this.listaTrabajadores = listaTrabajadores;
         Scanner scanner = new Scanner(System.in);
         Ventana ventana = new Ventana();
@@ -36,6 +37,9 @@ public class Ejercicio4 {
                 int month = localDate.getMonthValue();
                 CalculoUnTrabajador cal = new CalculoUnTrabajador(trab,parametro, date, false, "");
                 cal.run();
+                createPdf pdf = new createPdf();
+                    pdf.createPdf(cal);
+                    
                 
                 if(month == 6){
                     System.out.println("\n\n");
