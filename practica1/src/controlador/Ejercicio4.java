@@ -68,7 +68,8 @@ public class Ejercicio4 {
             }
 
         }
-        
+        Limpiar limp = new Limpiar(listaTrabajadores);
+        listaTrabajadores = limp.filtrar(listaTrabajadores);
         Consulta consulta = new Consulta();
         consulta.conectar();
         consulta.escribir(nominas);
