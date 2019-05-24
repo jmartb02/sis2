@@ -1,6 +1,7 @@
 package modelo;
 
 import Controlador.NewHibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -104,18 +105,18 @@ public class Consulta {
        return frase;
     }
     
-    public static void escribir(List<Trabajadorbbdd> trabajadores){
+    public static void escribir(ArrayList<Nomina> nominas){
         Transaction transaction = session.beginTransaction();
-        for(Trabajadorbbdd trabajador:trabajadores){
-            if(trabajador.getNifnie() != ""){
-                session.saveOrUpdate(trabajador);
-                session.saveOrUpdate(trabajador.getNominas());
+        for(Nomina nomina:nominas){
+            if(nomina.getTrabajadorbbdd().getNifnie() != ""){
+                //System.out.println(nomina.getTrabajadorbbdd().getCategorias().getNombreCategoria());
+                session.saveOrUpdate(nomina.getTrabajadorbbdd().getCategorias());
+                session.saveOrUpdate(nomina.getTrabajadorbbdd().getEmpresas());
+                session.saveOrUpdate(nomina.getTrabajadorbbdd());
+                session.saveOrUpdate(nomina);
             }
         }
-
         
-
-
       
         transaction.commit();
     }

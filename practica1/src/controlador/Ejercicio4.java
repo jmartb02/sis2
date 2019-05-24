@@ -5,15 +5,18 @@
  */
 package controlador;
 
-import java.io.IOException;
-import modelo.Parametro;
 import modelo.Trabajadorbbdd;
+import modelo.Consulta;
+import modelo.Parametro;
+import modelo.Nomina;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import vista.*;
 
@@ -23,6 +26,9 @@ public class Ejercicio4 {
     
     public Ejercicio4(ArrayList<Trabajadorbbdd> listaTrabajadores, Parametro parametro) throws ParseException, IOException{
         this.listaTrabajadores = listaTrabajadores;
+        Limpiar limpia = new Limpiar(listaTrabajadores);
+        ArrayList<Trabajadorbbdd> trabajadoresFiltrados = limpia.limpiar();
+        ArrayList<Nomina> nominas = new ArrayList<Nomina>();
         Scanner scanner = new Scanner(System.in);
         Ventana ventana = new Ventana();
         ventana.imprimirPorPantalla("Inserte una fecha:\n");
@@ -30,8 +36,8 @@ public class Ejercicio4 {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = formatter.parse(fecha);
         
-        for(Trabajadorbbdd trab: listaTrabajadores){
-            if(date.after(trab.getFechaAlta())){
+        for(Trabajadorbbdd trab: trabajadoresFiltrados){
+            if(date.after(trab.getFechaAlta())  && trab.getNifnie() != ""){
                System.out.println("\n\n");
                 LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 int month = localDate.getMonthValue();
@@ -39,18 +45,20 @@ public class Ejercicio4 {
                 cal.run();
                 createPdf pdf = new createPdf();
                     pdf.createPdf(cal,"");
-                    
+                nominas.add(cal.getNomina());
                 
                 if(month == 6){
                     System.out.println("\n\n");
                     CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "JUNIO");
                     calExtra.run();  
+                    nominas.add(calExtra.getNomina());
                     createPdf pdf2 = new createPdf();
                     pdf2.createPdf(calExtra,"EXTRA");
                 }else if(month == 12){
                     System.out.println("\n\n");
                     CalculoUnTrabajador calExtra = new CalculoUnTrabajador(trab,parametro, date, true, "DICIEMBRE");
                     calExtra.run(); 
+                    nominas.add(calExtra.getNomina());
                     createPdf pdf2 = new createPdf();
                     pdf2.createPdf(calExtra,"EXTRA");
                 }
@@ -60,6 +68,11 @@ public class Ejercicio4 {
             }
 
         }
+        
+        Consulta consulta = new Consulta();
+        consulta.conectar();
+        consulta.escribir(nominas);
+        consulta.desconectar();
     }
           
         

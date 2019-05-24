@@ -5,8 +5,9 @@
  */
 package controlador;
 
-import modelo.Parametro;
 import modelo.Trabajadorbbdd;
+import modelo.Parametro;
+import modelo.Nomina;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -20,12 +21,14 @@ public class CalculoTrabajador {
     private double complemento;
     private Date fecha;
     private boolean esExtra;
+    private Nomina nomina;
     
-    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd trabajador, Date fecha, boolean esExtra){
+    public CalculoTrabajador(Parametro parametro,Trabajadorbbdd trabajador, Date fecha, boolean esExtra, Nomina nomina){
     this.parametro=parametro;
     this.trabajador=trabajador;
     this.fecha = fecha;
     this.esExtra = esExtra;
+    this.nomina = nomina;
     }
     public Double calculoComplemento(){
         Double complemento = parametro.getComplementos().get(calculoIndex())/14;
@@ -92,10 +95,11 @@ public class CalculoTrabajador {
         if((yearNomina-year) % 3 == 0 && mesNomina <= mes){
             trienios--;
         }
-            
+        this.nomina.setNumeroTrienios(trienios);
         if(trienios>=1){
         antiguedad = parametro.getTrienio().get(trienios-1);
         }
+     
         return antiguedad;
     }
         public int calculoTrienio(){
@@ -243,8 +247,11 @@ public class CalculoTrabajador {
        Date alta = trabajador.getFechaAlta();
        LocalDate altaTrabajador = alta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
        int index = calculoIndex();
-            Double brutos = parametro.getSalariobase().get(index);
-            Double complementos = parametro.getComplementos().get(index);
+        Double brutos = parametro.getSalariobase().get(index);
+        Double complementos = parametro.getComplementos().get(index);
+        this.trabajador.getCategorias().setSalarioBaseCategoria(brutos);
+        this.trabajador.getCategorias().setComplementoCategoria(complementos);
+        
        double brutoAnual = brutos+complementos;
         int yearNomina=localDate.getYear();
         int yearAlta = altaTrabajador.getYear();

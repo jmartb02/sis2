@@ -80,6 +80,11 @@ public class ConsultaExcel {
                      Date date = new Date(2010,1,1);
                     trabajador.setFechaAlta(date);                    
                 }
+                 if(row.getCell(5) != null){
+                    trabajador.setEmail(row.getCell(5).getStringCellValue());
+                }else{
+                    trabajador.setEmail("");
+                }
                 if(row.getCell(6) != null){
                     
                     empresa.setNombre(row.getCell(6).getStringCellValue());

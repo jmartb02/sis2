@@ -5,6 +5,8 @@
  */
 package controlador;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import modelo.Parametro;
 import modelo.Trabajadorbbdd;
 import modelo.Nomina;
@@ -112,7 +114,6 @@ public class CalculoUnTrabajador {
     public void setMes(String mes) {
         this.mes = mes;
     }
-    
 
     private double salarioBase;
      
@@ -122,14 +123,13 @@ public class CalculoUnTrabajador {
     private double costeTotalParaEmpresario;
     private double costeTotalTrabajador;
     
-    private Nomina nomina;
     private Trabajadorbbdd trabajador;
     private Parametro parametro;
     private CalculoTrabajador calculo;
     private Date fecha;
     private boolean esExtra;
     private String mes;
-    
+    private Nomina nomina;
     private double calculoEmpresarioBase;
     
     public CalculoUnTrabajador(Trabajadorbbdd trabajador,Parametro parametro, Date fecha, boolean esExtra, String mes){
@@ -137,9 +137,9 @@ public class CalculoUnTrabajador {
         this.esExtra = esExtra;
         this.trabajador = trabajador;
         this.parametro = parametro;
-        this.calculo = new CalculoTrabajador(this.getParametro(), trabajador, fecha, esExtra);
-        this.fecha = fecha;
         this.nomina = new Nomina();
+        this.calculo = new CalculoTrabajador(this.getParametro(), trabajador, fecha, esExtra, this.nomina);
+        this.fecha = fecha;
     }
     
     public void asignar(){
@@ -161,6 +161,40 @@ public class CalculoUnTrabajador {
         this.getNomina().setBrutoAnual(this.getCalculo().getBrutoAnual());
         
         this.nomina.setTrabajadorbbdd(this.trabajador);
+        LocalDate trabajadorDate = this.fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year=trabajadorDate.getYear();
+        int month = trabajadorDate.getMonthValue();
+        this.nomina.setMes(month);
+        this.nomina.setAnio(year);
+        this.nomina.setImporteTrienios(this.getCalculo().calculoAntiguedad());
+        this.nomina.setImporteSalarioMes(this.getSalarioBase());
+        this.nomina.setImporteComplementoMes(this.getNomina().getImporteComplementoMes());
+        this.nomina.setValorProrrateo(this.getNomina().getValorProrrateo());
+        this.nomina.setBrutoAnual(this.getNomina().getBrutoAnual());
+        this.nomina.setIrpf(this.getCalculo().getIRPF());
+        this.nomina.setImporteIrpf(this.getCalculo().calculoIRFP());
+        this.nomina.setBaseEmpresario(this.getNomina().getBaseEmpresario());
+        this.nomina.setSeguridadSocialEmpresario(this.getCalculo().getCalculoEmpresarioBase());
+        this.nomina.setImporteSeguridadSocialEmpresario(this.getCalculo().calculoContigenciasComunes());
+        this.nomina.setDesempleoEmpresario(this.getCalculo().getDesempleoEmpresario());
+        this.nomina.setImporteDesempleoEmpresario(this.getCalculo().calculoDesempleoEmpresario());
+        this.nomina.setFormacionEmpresario(this.getCalculo().getFormacionEmpresaio());
+        this.nomina.setImporteFormacionEmpresario(this.getCalculo().calculoFormacionEmpresario());
+        this.nomina.setAccidentesTrabajoEmpresario(this.getCalculo().getAccidentesEmpresario());
+        this.nomina.setImporteAccidentesTrabajoEmpresario(this.getCalculo().calculoAccidentesEmpresario());
+        this.nomina.setFogasaempresario(this.getCalculo().getFogasa());
+        this.nomina.setImporteFogasaempresario(this.getCalculo().calculoFogasa());
+        
+        this.nomina.setSeguridadSocialTrabajador(this.getCalculo().getContingencias());
+        this.nomina.setImporteSeguridadSocialTrabajador(this.getNomina().getSeguridadSocialTrabajador());
+        this.nomina.setDesempleoTrabajador(this.getCalculo().getDesempleo());
+        this.nomina.setImporteDesempleoTrabajador(this.getNomina().getDesempleoTrabajador());
+        this.nomina.setFormacionTrabajador(this.getCalculo().getFormacion());
+        this.nomina.setImporteFormacionTrabajador(this.getNomina().getFormacionTrabajador());
+        this.nomina.setBrutoNomina(getDevengos());
+        this.nomina.setLiquidoNomina(((double)Math.round(this.getNomina().getLiquidoNomina() * 100d)/100d));
+        this.nomina.setCosteTotalEmpresario(getCosteTotalParaEmpresario());
+        
     }
     public void imprimirresultadoDatos() throws IOException{
     String empresa ="La empresa "+this.getTrabajador().getEmpresas().getNombre()+ " con CIF: "+this.getTrabajador().getEmpresas().getCif();
