@@ -109,7 +109,34 @@ public class Consulta {
         Transaction transaction = session.beginTransaction();
         for(Nomina nomina:nominas){
             if(nomina.getTrabajadorbbdd().getNifnie() != ""){
-                //System.out.println(nomina.getTrabajadorbbdd().getCategorias().getNombreCategoria());
+                String query = "Select c from Trabajadorbbdd c where NIFNIE = '"+nomina.getTrabajadorbbdd().getNifnie()+"'";
+                List<Trabajadorbbdd> trabajadores = session.createQuery(query).list();
+                
+                if(!trabajadores.isEmpty()){
+                    for(Trabajadorbbdd trab:trabajadores){
+                        if(trab.getNombre().equals(nomina.getTrabajadorbbdd().getNombre())){
+                            nomina.setTrabajadorbbdd(trab);
+                        }
+                    } 
+                }
+                query = "Select c from Categorias c where NombreCategoria = '"+nomina.getTrabajadorbbdd().getCategorias().getNombreCategoria()+"'";
+
+                List<Categorias> categorias = session.createQuery(query).list();
+                
+                if(!categorias.isEmpty()){
+                    categorias.get(0).setComplementoCategoria(nomina.getTrabajadorbbdd().getCategorias().getComplementoCategoria());
+                    categorias.get(0).setSalarioBaseCategoria(nomina.getTrabajadorbbdd().getCategorias().getSalarioBaseCategoria());
+                    nomina.getTrabajadorbbdd().setCategorias(categorias.get(0));
+                }
+                
+                query = "Select c from Empresas c where CIF = '"+nomina.getTrabajadorbbdd().getEmpresas().getCif()+"'";
+                List<Empresas> empresas = session.createQuery(query).list();
+                
+                if(!empresas.isEmpty()){ 
+                    empresas.get(0).setNombre(nomina.getTrabajadorbbdd().getEmpresas().getNombre());
+                    nomina.getTrabajadorbbdd().setEmpresas(empresas.get(0));
+                }
+                
                 session.saveOrUpdate(nomina.getTrabajadorbbdd().getCategorias());
                 session.saveOrUpdate(nomina.getTrabajadorbbdd().getEmpresas());
                 session.saveOrUpdate(nomina.getTrabajadorbbdd());
