@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package controlador;
-
+import vista.*;
 import modelo.Parametro;
 import modelo.Trabajadorbbdd;
 import modelo.ConsultaExcel;
@@ -24,26 +24,27 @@ public class MainNominas {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, ParserConfigurationException, FileNotFoundException, ParseException {
-        ArrayList<Trabajadorbbdd> listaTrabajadores ;
-        
+      /* ArrayList<Trabajadorbbdd> listaTrabajadores ;
         ConsultaExcel consulta = new ConsultaExcel("src/resources/SistemasInformacionII.xlsx");
         listaTrabajadores= consulta.leer();
-        Parametro parametro = consulta.leer1();
+        Parametro parametro = consulta.leer1(); */
         /*createPdf pdf = new createPdf();
         System.out.println(listaTrabajadores.get(1).getCodigoCuenta());
      
         pdf.createPdf(listaTrabajadores.get(7));*/
-        
+        Interfaz interfaz = new Interfaz();
+        interfaz.setTitle("Generador de nominas");
+        interfaz.setVisible(true);
 
-        //Ejercicio1 ejercicio1 = new Ejercicio1();
-        Ejercicio2 ejercicio2 = new Ejercicio2();
-        Ejercicio3 ejercicio3 = new Ejercicio3();
-        //ejercicio1.run();
-        ejercicio2.run(listaTrabajadores);
-        ejercicio3.run(listaTrabajadores);
-        consulta.escribir(listaTrabajadores);
-        
-        Ejercicio4 ejercicio4 = new Ejercicio4(listaTrabajadores,parametro);
+//        //Ejercicio1 ejercicio1 = new Ejercicio1();
+//        Ejercicio2 ejercicio2 = new Ejercicio2();
+//        Ejercicio3 ejercicio3 = new Ejercicio3();
+//        //ejercicio1.run();
+//        ejercicio2.run(listaTrabajadores);
+//        ejercicio3.run(listaTrabajadores);
+//        consulta.escribir(listaTrabajadores);
+//        
+//        Ejercicio4 ejercicio4 = new Ejercicio4(listaTrabajadores,parametro);
         
         
     }

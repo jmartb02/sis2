@@ -41,12 +41,12 @@ import modelo.Trabajadorbbdd;
  * @author cao
  */
 public class createPdf  {
-   public void createPdf(CalculoUnTrabajador trabajador, String extra) throws IOException {
+   public void createPdf(CalculoUnTrabajador trabajador, String extra,String ruta) throws IOException {
        LocalDate trabajadorDate = trabajador.getFecha().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int year=trabajadorDate.getYear();
         int month = trabajadorDate.getMonthValue();
         int day = trabajadorDate.getDayOfMonth();
-       String dest = "src/resources/"+trabajador.getTrabajador().getNifnie()+trabajador.getTrabajador().getNombre()
+       String dest = ruta+"/"+trabajador.getTrabajador().getNifnie()+trabajador.getTrabajador().getNombre()
                +trabajador.getTrabajador().getApellido1()+trabajador.getTrabajador().getApellido2()+year+month+day+extra+".pdf";
     PdfWriter writer = new PdfWriter(dest);
     PdfDocument pdfDoc = new PdfDocument(writer);
@@ -232,12 +232,6 @@ tabla7.addCell(nomina3);
 Cell nomina4 = new Cell();
 nomina4.setBorder(new SolidBorder(1));
 nomina4.add(new Paragraph("Calculo empresaio: BASE                                                                      "+trabajador.getNomina().getBaseEmpresario())).setTextAlignment(TextAlignment.LEFT);;
-nomina4.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);
-nomina4.add(new Paragraph("Contingenicas comunes             "+trabajador.getCalculo().getContingenciasEmpresario()+"%                                                  "+trabajador.getCalculo().calculoContigenciasComunes())).setTextAlignment(TextAlignment.LEFT);;
-nomina4.add(new Paragraph("Desempleo                                   "+trabajador.getCalculo().getDesempleoEmpresario()+"%                                                  "+trabajador.getCalculo().calculoDesempleoEmpresario())).setTextAlignment(TextAlignment.LEFT);;
-nomina4.add(new Paragraph("Formacion                                    "+trabajador.getCalculo().getFormacionEmpresaio()+"%                                                  "+trabajador.getCalculo().calculoFormacionEmpresario())).setTextAlignment(TextAlignment.LEFT);;
-nomina4.add(new Paragraph("Accidentes                                   "+trabajador.getCalculo().getAccidentesEmpresario()+"%                                                   "+trabajador.getCalculo().calculoAccidentesEmpresario())).setTextAlignment(TextAlignment.LEFT);;
-nomina4.add(new Paragraph("FOGASAS                                    "+trabajador.getCalculo().getFogasa()+"%                                                  "+trabajador.getCalculo().calculoFogasa())).setTextAlignment(TextAlignment.LEFT);;
 
 nomina4.add(new Paragraph("                     \n")).setTextAlignment(TextAlignment.LEFT);;
 nomina4.add(new Paragraph("TOTAL empresaio                                                                                   "+trabajador.getCosteTotalParaEmpresario())).setTextAlignment(TextAlignment.LEFT);;
@@ -256,6 +250,7 @@ empty.add(tabla4);//cabecera nomina
 empty.add(tabla5);
 empty.add(tabla6);
 empty.add(tabla7);
+empty.add(tabla3);//separador
 empty.add(tabla8);
 
 doc.add(empty);

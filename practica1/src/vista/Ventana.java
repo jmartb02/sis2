@@ -15,7 +15,7 @@ public class Ventana {
     }
     
     public void imprimirPorPantalla(String frase){
-        System.out.println(frase);
+     System.out.println(frase);
     }
     
 }

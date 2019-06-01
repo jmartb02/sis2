@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Trabajadores>
+    <Trabajador id="3">
+        <Nombre>Mohamed</Nombre>
+        <PrimerApellido>Ahmed</PrimerApellido>
+        <PrimerApellido>Ahmed</PrimerApellido>
+        <categoria>Analista</categoria>
+        <empresa>TecnoProyectSL</empresa>
+    </Trabajador>
+    <Trabajador id="12">
+        <Nombre>Alencar</Nombre>
+        <PrimerApellido>Alves</PrimerApellido>
+        <PrimerApellido>Lidiane</PrimerApellido>
+        <categoria>Programador</categoria>
+        <empresa>TecnoProyectSL</empresa>
+    </Trabajador>
+    <Trabajador id="23">
+        <Nombre>Latifa Epfouad Erre</Nombre>
+        <PrimerApellido>Boughaza</PrimerApellido>
+        <PrimerApellido>Boughaza</PrimerApellido>
+        <categoria>Auxiliar</categoria>
+        <empresa>TecnoLeonSL</empresa>
+    </Trabajador>
+    <Trabajador id="67">
+        <Nombre>Luisa</Nombre>
+        <PrimerApellido>Gracia</PrimerApellido>
+        <PrimerApellido>Puerto</PrimerApellido>
+        <categoria>Limpiador</categoria>
+        <empresa>TecnoProyectSL</empresa>
+    </Trabajador>
+    <Trabajador id="79">
+        <Nombre>Pilar</Nombre>
+        <PrimerApellido>Molina</PrimerApellido>
+        <PrimerApellido>Vara</PrimerApellido>
+        <categoria>Analista</categoria>
+        <empresa>TecnoProyectSL</empresa>
+    </Trabajador>
+    <Trabajador id="84">
+        <Nombre>Paulina</Nombre>
+        <PrimerApellido>Orejas</PrimerApellido>
+        <PrimerApellido>Díez</PrimerApellido>
+        <categoria>Auxiliar</categoria>
+        <empresa>PBlankSA</empresa>
+    </Trabajador>
+</Trabajadores>
